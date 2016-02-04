@@ -1,0 +1,40 @@
+package co.edu.javeriana;
+import co.edu.javeriana.prenat.resource.*;
+
+page DietaList(Collection<Dieta> dietaList) controlledBy DietaManager  {
+	Form {
+	       Panel("Collection<Dieta>") {
+	       	
+	           DataTable("Collection<Dieta>", null) {
+	               header : {                    
+	                   Label($desayuno);
+	                   Label("Almuerzo");
+	                   Label("Cena");
+	                   Label("Merienda");
+	                   Label("Patologia");
+	                   Label("View");
+	                   Label("Edit");
+	                   Label("Delete");
+	               }
+	               body : 
+	               for(Dieta dieta in dietaList) {
+	               		Label(dieta.desayuno);
+	               		Label(dieta.almuerzo);
+	               		Label(dieta.cena);
+	               		Label(dieta.merienda);
+	               		Label(dieta.patologia);
+	                   	Button("View",false)-> viewDieta(dieta);
+	                   	Button("Edit",false) -> editDieta(dieta);
+	                   	Button("Delete",false) -> deleteDieta(dieta);
+	               }
+
+	           }
+	        	
+	        	GMap("4.627447, -74.063842","15","HYBRID");
+	        
+	        	
+	        	
+		}
+	} 
+	
+}

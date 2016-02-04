@@ -1,0 +1,63 @@
+{
+	generatorSuiteConfigurations: [
+	
+		{
+			generatorClass: "co.edu.javeriana.anchurus.generator.laravel.AnchurusLaravelGenerator",
+			active: true,
+			outputConfigurations: 
+			[
+				{
+					name: "pages",
+					outputDirectory:"../laravelTestProject/resources/views/",
+					
+					createOutputDirectory:true,
+					cleanUpDerivedResources:true,
+					overrideExistingResources:true,
+					setDerivedProperty:true,
+					canClearOutputDirectory:false,
+					installDslAsPrimarySource:false,
+					hideSyntheticLocalVariables:true,
+					keepLocalHistory:false,
+					useOutputPerSourceFolder:false
+				}			
+			]
+		},
+	
+		{
+			generatorClass: "co.edu.javeriana.isml.generator.crud.CRUDGenerator",
+			active: true,
+			onDemand: true,
+			outputConfigurations: 
+			[
+				{
+					name: "controllers",
+					outputDirectory:"controller",
+					createOutputDirectory:true,
+					cleanUpDerivedResources:false,
+					overrideExistingResources:true,
+					setDerivedProperty:false,
+					canClearOutputDirectory:false,
+					installDslAsPrimarySource:false,
+					hideSyntheticLocalVariables:true,
+					keepLocalHistory:false,
+					useOutputPerSourceFolder:false
+				},
+				{
+					name: "pages",
+					outputDirectory:"view",
+					createOutputDirectory:true,
+					cleanUpDerivedResources:false,
+					overrideExistingResources:true,
+					setDerivedProperty:false,
+					canClearOutputDirectory:false,
+					installDslAsPrimarySource:false,
+					hideSyntheticLocalVariables:true,
+					keepLocalHistory:false,
+					useOutputPerSourceFolder:false
+				}
+				
+				
+			]
+		}
+	]
+}
