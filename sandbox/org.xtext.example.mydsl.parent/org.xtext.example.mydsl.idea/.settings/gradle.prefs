@@ -1,0 +1,12 @@
+{
+  "1.0": {
+    "project_path": ":org.xtext.example.mydsl.idea",
+    "project_dir": "C:\\Users\\user\\git\\anchurus-gen\\sandbox\\org.xtext.example.mydsl.parent\\org.xtext.example.mydsl.idea",
+    "connection_project_dir": "C:\\Users\\user\\git\\anchurus-gen\\sandbox\\org.xtext.example.mydsl.parent",
+    "connection_gradle_user_home": null,
+    "connection_gradle_distribution": "GRADLE_DISTRIBUTION(WRAPPER)",
+    "connection_java_home": null,
+    "connection_jvm_arguments": "",
+    "connection_arguments": ""
+  }
+}

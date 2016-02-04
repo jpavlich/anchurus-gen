@@ -1,0 +1,93 @@
+<idea-plugin version="2">
+	<extensions defaultExtensionNs="org.eclipse.xtext.idea">
+		<package
+			uri="http://www.xtext.org/example/mydsl/MyDsl"
+			class="org.xtext.example.mydsl.myDsl.MyDslPackage"
+		/>
+		<resourceFactory 
+			type="mydsl"
+			class="org.eclipse.xtext.resource.IResourceFactory"
+			factoryClass="org.xtext.example.mydsl.idea.MyDslExtensionFactory"
+		/>
+		<resourceServiceProvider
+			uriExtension="mydsl"
+			class="org.eclipse.xtext.idea.resource.IResourceIdeaServiceProvider"
+			factoryClass="org.xtext.example.mydsl.idea.MyDslExtensionFactory"
+		/>
+
+		<lang.setup
+			language="org.xtext.example.mydsl.MyDsl"
+			implementationClass="org.xtext.example.mydsl.idea.MyDslIdeaSetup"
+		/>
+	</extensions>
+
+	<extensions defaultExtensionNs="com.intellij">
+		<psi.treeChangePreprocessor implementation="org.xtext.example.mydsl.idea.lang.psi.MyDslCodeBlockModificationListener"/>
+
+		<fileTypeFactory implementation="org.xtext.example.mydsl.idea.lang.MyDslFileTypeFactory"/>
+		<stubElementTypeHolder class="org.xtext.example.mydsl.idea.lang.MyDslElementTypeProvider"/>
+		<lang.ast.factory 
+			language="org.xtext.example.mydsl.MyDsl"
+			factoryClass="org.xtext.example.mydsl.idea.MyDslExtensionFactory"
+			implementationClass="org.eclipse.xtext.idea.lang.BaseXtextASTFactory"
+		/>
+		<lang.parserDefinition 
+			language="org.xtext.example.mydsl.MyDsl"
+			factoryClass="org.xtext.example.mydsl.idea.MyDslExtensionFactory"
+			implementationClass="org.xtext.example.mydsl.idea.lang.parser.MyDslParserDefinition"
+		/>
+		<lang.findUsagesProvider 
+			language="org.xtext.example.mydsl.MyDsl"
+			factoryClass="org.xtext.example.mydsl.idea.MyDslExtensionFactory"
+			implementationClass="org.eclipse.xtext.idea.findusages.BaseXtextFindUsageProvider"
+		/>
+		<lang.refactoringSupport 
+			language="org.xtext.example.mydsl.MyDsl"
+			factoryClass="org.xtext.example.mydsl.idea.MyDslExtensionFactory"
+			implementationClass="org.eclipse.xtext.idea.refactoring.BaseXtextRefactoringSupportProvider"
+		/>
+		<lang.namesValidator 
+			language="org.xtext.example.mydsl.MyDsl"
+			factoryClass="org.xtext.example.mydsl.idea.MyDslExtensionFactory"
+			implementationClass="com.intellij.lang.refactoring.NamesValidator"
+		/>
+		<lang.syntaxHighlighterFactory key="org.xtext.example.mydsl.MyDsl" implementationClass="org.xtext.example.mydsl.idea.highlighting.MyDslSyntaxHighlighterFactory" />
+		<lang.braceMatcher 
+			language="org.xtext.example.mydsl.MyDsl"
+			factoryClass="org.xtext.example.mydsl.idea.MyDslExtensionFactory"
+			implementationClass="com.intellij.lang.PairedBraceMatcher"
+		/>
+		<annotator 
+			language="org.xtext.example.mydsl.MyDsl"
+			factoryClass="org.xtext.example.mydsl.idea.MyDslExtensionFactory"
+			implementationClass="org.eclipse.xtext.idea.annotation.IssueAnnotator"
+		/>
+		<completion.contributor language="org.xtext.example.mydsl.MyDsl" implementationClass="org.xtext.example.mydsl.idea.completion.MyDslCompletionContributor"/>
+		<pom.declarationSearcher implementation="org.xtext.example.mydsl.idea.lang.pom.MyDslPomDeclarationSearcher"/>
+
+		<lang.psiStructureViewFactory 
+			language="org.xtext.example.mydsl.MyDsl"
+			factoryClass="org.xtext.example.mydsl.idea.MyDslExtensionFactory"
+			implementationClass="com.intellij.lang.PsiStructureViewFactory"
+		/>
+		<facetType implementation="org.xtext.example.mydsl.idea.facet.MyDslFacetType"/>
+      	<lang.documentationProvider 
+      		language="org.xtext.example.mydsl.MyDsl"
+      		factoryClass="org.xtext.example.mydsl.idea.MyDslExtensionFactory"
+      		implementationClass="org.eclipse.xtext.idea.documentation.IdeaDocumentationProvider"
+      	/>
+		<colorSettingsPage implementation="org.xtext.example.mydsl.idea.highlighting.MyDslColorSettingsPage"/>
+		<highlightVisitor implementation="org.xtext.example.mydsl.idea.highlighting.MyDslSemanticHighlightVisitor"/>
+
+		<lang.formatter 
+			language="org.xtext.example.mydsl.MyDsl"
+			factoryClass="org.xtext.example.mydsl.idea.MyDslExtensionFactory"
+			implementationClass="com.intellij.formatting.FormattingModelBuilder"
+		/>
+		<lang.commenter 
+			language="org.xtext.example.mydsl.MyDsl"
+			factoryClass="org.xtext.example.mydsl.idea.MyDslExtensionFactory"
+			implementationClass="com.intellij.lang.CodeDocumentationAwareCommenter"
+		/>
+	</extensions>
+</idea-plugin>
