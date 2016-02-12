@@ -3,6 +3,8 @@ package co.edu.javeriana.anchurus.generator.laravel
 import co.edu.javeriana.isml.generator.common.GeneratorSuite
 import co.edu.javeriana.isml.generator.common.OutputConfiguration
 import co.edu.javeriana.anchurus.generator.laravel.generators.PagesGenerator
+import co.edu.javeriana.anchurus.generator.laravel.generators.MigrationsGenerator
+import co.edu.javeriana.anchurus.generator.laravel.generators.ModelsGenerator
 
 class AnchurusLaravelGenerator extends GeneratorSuite{
 	
@@ -17,10 +19,18 @@ class AnchurusLaravelGenerator extends GeneratorSuite{
 	
 	@OutputConfiguration
 	public static final String SERVICE_IMPL = "service.impl"
+	
+	@OutputConfiguration
+	public static final String MIGRATIONS = "migrations"
+	
+	@OutputConfiguration
+	public static final String MODELS = "models"
 		
 	override getGenerators() {
 		#{
 			new PagesGenerator
+			new MigrationsGenerator
+			new ModelsGenerator
 		}
 	}
 	
