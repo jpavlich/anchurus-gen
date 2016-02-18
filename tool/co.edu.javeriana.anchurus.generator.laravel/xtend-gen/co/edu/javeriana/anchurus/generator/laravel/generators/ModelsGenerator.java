@@ -17,7 +17,7 @@ public class ModelsGenerator extends SimpleGenerator<Entity> {
   
   @Override
   public String getOutputConfigurationName() {
-    return AnchurusLaravelGenerator.PAGES;
+    return AnchurusLaravelGenerator.MODELS;
   }
   
   @Override

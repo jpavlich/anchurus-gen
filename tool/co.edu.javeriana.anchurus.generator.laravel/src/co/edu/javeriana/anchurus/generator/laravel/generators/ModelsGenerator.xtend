@@ -12,7 +12,7 @@ class ModelsGenerator extends SimpleGenerator<Entity> {
 	@Inject extension IQualifiedNameProvider
 
 	override getOutputConfigurationName() {
-		AnchurusLaravelGenerator.PAGES
+		AnchurusLaravelGenerator.MODELS
 	}
 
 	

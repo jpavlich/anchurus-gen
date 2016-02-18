@@ -6,13 +6,16 @@ import co.edu.javeriana.isml.generator.common.SimpleGenerator
 import co.edu.javeriana.isml.isml.Entity
 import com.google.inject.Inject
 import org.eclipse.xtext.naming.IQualifiedNameProvider
+import co.edu.javeriana.anchurus.generator.laravel.utils.Utils
+import java.util.Calendar
 
 class MigrationsGenerator extends SimpleGenerator<Entity> {
 
 	@Inject extension IQualifiedNameProvider
+	@Inject extension Utils
 
 	override getOutputConfigurationName() {
-		AnchurusLaravelGenerator.PAGES
+		AnchurusLaravelGenerator.MIGRATIONS
 	}
 
 	
@@ -23,7 +26,8 @@ class MigrationsGenerator extends SimpleGenerator<Entity> {
 	}
 	
 	override protected getFileName(Entity e) {
-		return e.name + ".php"
+		return fecha.get(Calendar.YEAR)+"_"+ (fecha.get(Calendar.MONTH)+1)+ "_"+ fecha.get(Calendar.DAY_OF_MONTH)+"_"+
+				fecha.get(Calendar.HOUR_OF_DAY)+ fecha.get(Calendar.MINUTE)+ fecha.get(Calendar.SECOND) + "_create_" +  e.name.toSnakeCase + "_table"  +".php"
 	}
 
 }

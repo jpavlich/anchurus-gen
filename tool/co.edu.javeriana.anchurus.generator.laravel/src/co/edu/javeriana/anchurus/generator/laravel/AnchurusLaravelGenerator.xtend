@@ -28,8 +28,8 @@ class AnchurusLaravelGenerator extends GeneratorSuite{
 		
 	override getGenerators() {
 		#{
-			new PagesGenerator
-			new MigrationsGenerator
+			new PagesGenerator,
+			new MigrationsGenerator,
 			new ModelsGenerator
 		}
 	}

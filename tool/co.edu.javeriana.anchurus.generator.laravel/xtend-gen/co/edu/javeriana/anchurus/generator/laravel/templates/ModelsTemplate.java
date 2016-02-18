@@ -28,7 +28,24 @@ public class ModelsTemplate extends SimpleTemplate<Entity> {
   @Override
   public CharSequence template(final Entity e) {
     StringConcatenation _builder = new StringConcatenation();
-    _builder.append("\t\t");
+    _builder.append("<?php");
+    _builder.newLine();
+    _builder.append("use Illuminate\\Database\\Eloquent\\Model;\t");
+    _builder.newLine();
+    _builder.newLine();
+    _builder.append("class ");
+    String _name = e.getName();
+    _builder.append(_name, "");
+    _builder.append(" extends Model{");
+    _builder.newLineIfNotEmpty();
+    _builder.append("\t");
+    _builder.append("protected $guarded = [];");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.newLine();
+    _builder.append("}");
+    _builder.newLine();
+    _builder.newLine();
     _builder.newLine();
     return _builder;
   }

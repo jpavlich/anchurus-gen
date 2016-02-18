@@ -18,6 +18,14 @@ class ModelsTemplate extends SimpleTemplate<Entity> {
 	
 
 	override def CharSequence template(Entity e) '''
+		<?php
+		use Illuminate\Database\Eloquent\Model;	
+		
+		class «e.name» extends Model{
+			protected $guarded = [];
+			
+		}
+		
 		
 	'''
 	
