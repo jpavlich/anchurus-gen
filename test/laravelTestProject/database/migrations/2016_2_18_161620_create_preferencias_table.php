@@ -7,7 +7,7 @@ class CreatePreferenciasTable extends Migration{
 	public function up(){
 		Schema::create('preferencias', function(Blueprint $table){
 			$table->increments('id');
-			$table->string(preferencia)->default('');
+			$table->string('preferencia')->default('');
 			$table->timestamps();
 		});
 		

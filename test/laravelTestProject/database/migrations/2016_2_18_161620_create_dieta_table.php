@@ -7,11 +7,11 @@ class CreateDietaTable extends Migration{
 	public function up(){
 		Schema::create('dieta', function(Blueprint $table){
 			$table->increments('id');
-			$table->string(desayuno)->default('');
-			$table->string(almuerzo)->default('');
-			$table->string(cena)->default('');
-			$table->string(merienda)->default('');
-			$table->bigInteger(patologia)->default(0);
+			$table->string('desayuno')->default('');
+			$table->string('almuerzo')->default('');
+			$table->string('cena')->default('');
+			$table->string('merienda')->default('');
+			$table->bigInteger('patologia')->default(0);
 			$table->timestamps();
 		});
 		

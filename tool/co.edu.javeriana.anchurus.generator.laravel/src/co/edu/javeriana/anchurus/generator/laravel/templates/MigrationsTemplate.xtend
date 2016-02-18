@@ -52,22 +52,22 @@ class MigrationsTemplate extends SimpleTemplate<Entity> {
 	def CharSequence generarTipo(Attribute attribute) {
 		switch(attribute.type.typeSpecification.typeSpecificationString){
 			case "String": '''
-				$table->string(«toSnakeCase(attribute.name)»)->default('');
+				$table->string('«toSnakeCase(attribute.name)»')->default('');
 			'''
 			case "Integer": '''
-				$table->integer(«toSnakeCase(attribute.name)»)->default(0);
+				$table->integer('«toSnakeCase(attribute.name)»')->default(0);
 			'''
 			case "Boolean": '''
-				$table->boolean(«toSnakeCase(attribute.name)»)->default(false);
+				$table->boolean('«toSnakeCase(attribute.name)»')->default(false);
 			'''
 			case "Float": '''
-				$table->float(«toSnakeCase(attribute.name)»)->default(0.0);
+				$table->float('«toSnakeCase(attribute.name)»')->default(0.0);
 			'''
 			case "Long": '''
-				$table->bigInteger(«toSnakeCase(attribute.name)»)->default(0);
+				$table->bigInteger('«toSnakeCase(attribute.name)»')->default(0);
 			'''
 			case "ByteArray": '''
-				$table->binary(«toSnakeCase(attribute.name)»);
+				$table->binary('«toSnakeCase(attribute.name)»');
 			'''
 		}
 	}
