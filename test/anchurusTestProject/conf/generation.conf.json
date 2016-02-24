@@ -29,6 +29,28 @@
 			outputConfigurations: 
 			[
 				{
+					name: "controllers",
+					outputDirectory:"../laravelTestProject/app/Http/Controllers/",
+					
+					createOutputDirectory:true,
+					cleanUpDerivedResources:true,
+					overrideExistingResources:true,
+					setDerivedProperty:true,
+					canClearOutputDirectory:false,
+					installDslAsPrimarySource:false,
+					hideSyntheticLocalVariables:true,
+					keepLocalHistory:false,
+					useOutputPerSourceFolder:false
+				}			
+			]
+		},
+		
+		{
+			generatorClass: "co.edu.javeriana.anchurus.generator.laravel.AnchurusLaravelGenerator",
+			active: true,
+			outputConfigurations: 
+			[
+				{
 					name: "models",
 					outputDirectory:"../laravelTestProject/app/",
 					
@@ -66,7 +88,6 @@
 				}			
 			]
 		},
-		
 		{
 			generatorClass: "co.edu.javeriana.isml.generator.crud.CRUDGenerator",
 			active: true,

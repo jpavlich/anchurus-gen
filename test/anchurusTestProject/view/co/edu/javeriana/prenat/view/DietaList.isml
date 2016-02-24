@@ -1,7 +1,7 @@
 package co.edu.javeriana;
 import co.edu.javeriana.prenat.resource.*;
 
-page DietaList(Collection<Dieta> dietaList) controlledBy DietaManager  {
+page DietaList(Collection<Dieta> dietas) controlledBy DietaManager  {
 	Form {
 	       Panel("Collection<Dieta>") {
 	       	
@@ -17,7 +17,7 @@ page DietaList(Collection<Dieta> dietaList) controlledBy DietaManager  {
 	                   Label("Delete");
 	               }
 	               body : 
-	               for(Dieta dieta in dietaList) {
+	               for(Dieta dieta in dietas) {
 	               		Label(dieta.desayuno);
 	               		Label(dieta.almuerzo);
 	               		Label(dieta.cena);

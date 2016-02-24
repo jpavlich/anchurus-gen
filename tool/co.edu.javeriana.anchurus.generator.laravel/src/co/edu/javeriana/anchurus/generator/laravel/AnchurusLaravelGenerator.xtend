@@ -1,10 +1,11 @@
 package co.edu.javeriana.anchurus.generator.laravel
 
-import co.edu.javeriana.isml.generator.common.GeneratorSuite
-import co.edu.javeriana.isml.generator.common.OutputConfiguration
-import co.edu.javeriana.anchurus.generator.laravel.generators.PagesGenerator
+import co.edu.javeriana.anchurus.generator.laravel.generators.ControllersGenerator
 import co.edu.javeriana.anchurus.generator.laravel.generators.MigrationsGenerator
 import co.edu.javeriana.anchurus.generator.laravel.generators.ModelsGenerator
+import co.edu.javeriana.anchurus.generator.laravel.generators.PagesGenerator
+import co.edu.javeriana.isml.generator.common.GeneratorSuite
+import co.edu.javeriana.isml.generator.common.OutputConfiguration
 
 class AnchurusLaravelGenerator extends GeneratorSuite{
 	
@@ -30,7 +31,8 @@ class AnchurusLaravelGenerator extends GeneratorSuite{
 		#{
 			new PagesGenerator,
 			new MigrationsGenerator,
-			new ModelsGenerator
+			new ModelsGenerator,
+			new ControllersGenerator
 		}
 	}
 	
