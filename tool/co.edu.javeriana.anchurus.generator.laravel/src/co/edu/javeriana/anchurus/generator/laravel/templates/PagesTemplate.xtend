@@ -89,7 +89,7 @@ class PagesTemplate extends SimpleTemplate<Page> {
 	
 	def CharSequence inputText(ViewInstance parte) '''
 		«IF parte.rows <= 1»
-		<label>«parte.parameters.get(0).valueTemplate» </label>{!!Form::text('«parte.id»', array('size' => '«parte.parameters.get(2).valueTemplate»')) !!}
+		<label>«parte.parameters.get(0).valueTemplate»</label>{!!Form::text('«parte.id»', array('size' => '«parte.parameters.get(2).valueTemplate»')) !!}
 		«ELSE»
 		«ENDIF»
 	'''

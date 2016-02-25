@@ -53,16 +53,15 @@ class ControllersTemplate extends SimpleTemplate<Controller> {
 	
 	def CharSequence generarCuerpo(MethodStatement statement) {
 		switch(statement){
-			Show: '''return view('co.edu.javeriana.«obtenerPagina(statement.expression)»', [ "«»" => $«» ] );'''
+			Show: obtenerPagina(statement.expression)
 			default: ''''''
 		}
 	}
 	
 	def CharSequence obtenerPagina(Expression expression) {
 		switch(expression){
-			ViewInstance:'''«toSnakeCase(expression.type.typeSpecification.name)»'''
-			default:'''
-			'''
+			ViewInstance:'''return view('co.edu.javeriana.«toSnakeCase(expression.type.typeSpecification.name)»', «generateArray(expression)») '''
+			default:''''''
 		}
 		
 	}

@@ -111,15 +111,8 @@ public class ControllersTemplate extends SimpleTemplate<Controller> {
     if (!_matched) {
       if (statement instanceof Show) {
         _matched=true;
-        StringConcatenation _builder = new StringConcatenation();
-        _builder.append("return view(\'co.edu.javeriana.");
         Expression _expression = ((Show)statement).getExpression();
-        CharSequence _obtenerPagina = this.obtenerPagina(_expression);
-        _builder.append(_obtenerPagina, "");
-        _builder.append("\', [ \"");
-        _builder.append("\" => $");
-        _builder.append(" ] );");
-        _switchResult = _builder;
+        _switchResult = this.obtenerPagina(_expression);
       }
     }
     if (!_matched) {
@@ -136,11 +129,16 @@ public class ControllersTemplate extends SimpleTemplate<Controller> {
       if (expression instanceof ViewInstance) {
         _matched=true;
         StringConcatenation _builder = new StringConcatenation();
+        _builder.append("return view(\'co.edu.javeriana.");
         Type _type = ((ViewInstance)expression).getType();
         TypeSpecification _typeSpecification = this._ismlModelNavigation.getTypeSpecification(_type);
         String _name = _typeSpecification.getName();
         String _snakeCase = this._utils.toSnakeCase(_name);
         _builder.append(_snakeCase, "");
+        _builder.append("\', ");
+        CharSequence _generateArray = this._utils.generateArray(((ViewInstance)expression));
+        _builder.append(_generateArray, "");
+        _builder.append(") ");
         _switchResult = _builder;
       }
     }
