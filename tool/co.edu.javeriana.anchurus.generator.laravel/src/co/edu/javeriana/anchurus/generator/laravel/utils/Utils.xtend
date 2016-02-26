@@ -4,6 +4,7 @@ import co.edu.javeriana.isml.isml.BoolValue
 import co.edu.javeriana.isml.isml.Expression
 import co.edu.javeriana.isml.isml.FloatValue
 import co.edu.javeriana.isml.isml.IntValue
+import co.edu.javeriana.isml.isml.MethodCall
 import co.edu.javeriana.isml.isml.NullValue
 import co.edu.javeriana.isml.isml.StringValue
 import co.edu.javeriana.isml.isml.VariableReference
@@ -23,13 +24,18 @@ class Utils {
 		return Calendar.getInstance()
 	}
 	def CharSequence valueTemplate(Expression e){
+		
+		if (e instanceof VariableReference) {
+			println(e.tail?.referencedElement)
+		}
+		println()
 		switch e{
 			BoolValue: e.literal.toString
 			FloatValue: e.literal.toString
 			IntValue: e.literal.toString
 			NullValue: '''NULL'''
 			StringValue:''' "«e.literal.toString»" '''
-			
+			MethodCall: '''call'''
 			VariableReference: '''«e.tail.referencedElement.name»'''//««««e.referencedElement.name»»»»->'''
 			ViewInstance: '''return view('co.edu.javeriana.«toSnakeCase(e.type.typeSpecification.name)»', «generateArray(e)») '''
 			default: e.toString
