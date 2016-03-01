@@ -36,7 +36,7 @@ class Utils {
 			NullValue: '''NULL'''
 			StringValue:''' "«e.literal.toString»" '''
 			MethodCall: '''call'''
-			VariableReference: '''«e.tail.referencedElement.name»'''//««««e.referencedElement.name»»»»->'''
+			VariableReference: '''«IF hasQueue(e)»«e.tail.referencedElement.name»«ELSE»«e.referencedElement.name»«ENDIF»'''
 			ViewInstance: '''return view('co.edu.javeriana.«toSnakeCase(e.type.typeSpecification.name)»', «generateArray(e)») '''
 			default: e.toString
 		}
@@ -56,4 +56,10 @@ class Utils {
 		return cadena
 	} 
 	
+	def boolean hasQueue(VariableReference vr){
+		if(vr.tail!=null)
+			return true
+		else
+			return false
+	}
 }

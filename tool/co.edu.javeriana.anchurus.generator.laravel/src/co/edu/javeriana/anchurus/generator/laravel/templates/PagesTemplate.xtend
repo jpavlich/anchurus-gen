@@ -122,9 +122,11 @@ class PagesTemplate extends SimpleTemplate<Page> {
 	'''
 	
 	def CharSequence password(ViewInstance parte)'''
+		{{ Form::password('«parte.id»') }}
 	'''
 	
 	def CharSequence checkBox(ViewInstance parte) '''
+		{!! Form::checkbox('«parte.id»', '«parte.parameters.get(0).valueTemplate»') !!}
 	'''
 	
 	def CharSequence link(ViewInstance parte)'''
