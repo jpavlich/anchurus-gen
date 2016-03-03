@@ -6,12 +6,12 @@ import co.edu.javeriana.isml.generator.common.SimpleGenerator
 import co.edu.javeriana.isml.isml.Page
 import com.google.inject.Inject
 import org.eclipse.xtext.naming.IQualifiedNameProvider
-import co.edu.javeriana.anchurus.generator.laravel.utils.Utils
+import co.edu.javeriana.anchurus.generator.laravel.utils.UtilsAnchurus
 
 class PagesGenerator extends SimpleGenerator<Page> {
 
 	@Inject extension IQualifiedNameProvider
-	@Inject extension Utils
+	@Inject extension UtilsAnchurus
 
 	override getOutputConfigurationName() {
 		AnchurusLaravelGenerator.PAGES

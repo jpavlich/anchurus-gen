@@ -1,10 +1,9 @@
  package co.edu.javeriana.anchurus.generator.laravel.templates
 
+import co.edu.javeriana.anchurus.generator.laravel.utils.UtilsAnchurus
 import co.edu.javeriana.isml.generator.common.SimpleTemplate
-import co.edu.javeriana.isml.isml.Expression
 import co.edu.javeriana.isml.isml.ForView
 import co.edu.javeriana.isml.isml.IfView
-import co.edu.javeriana.isml.isml.LiteralValue
 import co.edu.javeriana.isml.isml.Page
 import co.edu.javeriana.isml.isml.Reference
 import co.edu.javeriana.isml.isml.ViewInstance
@@ -13,11 +12,11 @@ import co.edu.javeriana.isml.scoping.IsmlModelNavigation
 import co.edu.javeriana.isml.validation.TypeChecker
 import com.google.inject.Inject
 import org.eclipse.emf.common.util.EList
-import co.edu.javeriana.isml.isml.VariableReference
 
 class PagesTemplate extends SimpleTemplate<Page> {
 	@Inject extension TypeChecker
-	@Inject extension IsmlModelNavigation	
+	@Inject extension IsmlModelNavigation
+	@Inject extension UtilsAnchurus	
 	int i
 
 	override preprocess(Page e) {
@@ -70,14 +69,6 @@ class PagesTemplate extends SimpleTemplate<Page> {
 		«ENDIF»
 	'''
 	
-	def CharSequence valueTemplate(Expression e){
-		switch e{
-			LiteralValue: e.literal.toString
-			VariableReference: '''{{ $«e.referencedElement.name»->«e.tail.referencedElement.name» }} '''
-			default: e.toString  
-		}
-	}
-	
 	def getId(ViewInstance parte){
 		if(parte.name!=null){
 			return parte.name
@@ -122,7 +113,7 @@ class PagesTemplate extends SimpleTemplate<Page> {
 	'''
 	
 	def CharSequence password(ViewInstance parte)'''
-		{{ Form::password('«parte.id»') }}
+		{!! Form::password('«parte.id»') !!}
 	'''
 	
 	def CharSequence checkBox(ViewInstance parte) '''
@@ -136,6 +127,7 @@ class PagesTemplate extends SimpleTemplate<Page> {
 	'''
 	
 	def CharSequence image(ViewInstance parte) '''
+		{!! HTML::image('«parte.parameters.get(0).valueTemplate»') !!}
 	'''
 	
 	def dispatch CharSequence plantillaParte(IfView ivtable)'''

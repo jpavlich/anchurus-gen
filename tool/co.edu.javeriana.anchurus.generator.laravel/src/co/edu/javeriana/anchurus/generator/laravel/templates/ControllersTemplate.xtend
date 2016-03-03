@@ -1,6 +1,6 @@
  package co.edu.javeriana.anchurus.generator.laravel.templates
 
-import co.edu.javeriana.anchurus.generator.laravel.utils.Utils
+import co.edu.javeriana.anchurus.generator.laravel.utils.UtilsAnchurus
 import co.edu.javeriana.isml.generator.common.SimpleTemplate
 import co.edu.javeriana.isml.isml.Action
 import co.edu.javeriana.isml.isml.Controller
@@ -15,7 +15,7 @@ import com.google.inject.Inject
 class ControllersTemplate extends SimpleTemplate<Controller> {
 	@Inject extension TypeChecker
 	@Inject extension IsmlModelNavigation
-	@Inject extension Utils	
+	@Inject extension UtilsAnchurus	
 	int i
 
 	override preprocess(Controller c) {

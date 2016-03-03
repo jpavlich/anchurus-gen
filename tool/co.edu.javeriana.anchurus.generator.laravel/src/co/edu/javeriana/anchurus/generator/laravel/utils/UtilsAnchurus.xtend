@@ -14,7 +14,7 @@ import com.google.common.base.CaseFormat
 import com.google.inject.Inject
 import java.util.Calendar
 
-class Utils {
+class UtilsAnchurus {
 	@Inject extension IsmlModelNavigation
 	
 	def toSnakeCase(String string) {

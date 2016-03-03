@@ -6,13 +6,13 @@ import co.edu.javeriana.isml.generator.common.SimpleGenerator
 import co.edu.javeriana.isml.isml.Entity
 import com.google.inject.Inject
 import org.eclipse.xtext.naming.IQualifiedNameProvider
-import co.edu.javeriana.anchurus.generator.laravel.utils.Utils
 import java.util.Calendar
+import co.edu.javeriana.anchurus.generator.laravel.utils.UtilsAnchurus
 
 class MigrationsGenerator extends SimpleGenerator<Entity> {
 
 	@Inject extension IQualifiedNameProvider
-	@Inject extension Utils
+	@Inject extension UtilsAnchurus
 
 	override getOutputConfigurationName() {
 		AnchurusLaravelGenerator.MIGRATIONS

@@ -1,19 +1,19 @@
  package co.edu.javeriana.anchurus.generator.laravel.templates
 
+import co.edu.javeriana.anchurus.generator.laravel.utils.UtilsAnchurus
 import co.edu.javeriana.isml.generator.common.SimpleTemplate
+import co.edu.javeriana.isml.isml.Attribute
 import co.edu.javeriana.isml.isml.Entity
 import co.edu.javeriana.isml.scoping.IsmlModelNavigation
 import co.edu.javeriana.isml.validation.TypeChecker
 import com.google.inject.Inject
-import co.edu.javeriana.isml.isml.Attribute
 import org.eclipse.xtext.naming.IQualifiedNameProvider
-import co.edu.javeriana.anchurus.generator.laravel.utils.Utils
 
 class MigrationsTemplate extends SimpleTemplate<Entity> {
 	@Inject extension TypeChecker
 	@Inject extension IsmlModelNavigation	
 	@Inject extension IQualifiedNameProvider
-	@Inject extension Utils
+	@Inject extension UtilsAnchurus
 	int i
 
 	override preprocess(Entity e) {

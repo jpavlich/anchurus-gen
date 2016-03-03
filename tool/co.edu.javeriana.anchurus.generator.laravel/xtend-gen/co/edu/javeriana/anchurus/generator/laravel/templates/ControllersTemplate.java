@@ -1,6 +1,6 @@
 package co.edu.javeriana.anchurus.generator.laravel.templates;
 
-import co.edu.javeriana.anchurus.generator.laravel.utils.Utils;
+import co.edu.javeriana.anchurus.generator.laravel.utils.UtilsAnchurus;
 import co.edu.javeriana.isml.generator.common.SimpleTemplate;
 import co.edu.javeriana.isml.isml.Action;
 import co.edu.javeriana.isml.isml.Controller;
@@ -31,7 +31,7 @@ public class ControllersTemplate extends SimpleTemplate<Controller> {
   
   @Inject
   @Extension
-  private Utils _utils;
+  private UtilsAnchurus _utilsAnchurus;
   
   private int i;
   
@@ -133,10 +133,10 @@ public class ControllersTemplate extends SimpleTemplate<Controller> {
         Type _type = ((ViewInstance)expression).getType();
         TypeSpecification _typeSpecification = this._ismlModelNavigation.getTypeSpecification(_type);
         String _name = _typeSpecification.getName();
-        String _snakeCase = this._utils.toSnakeCase(_name);
+        String _snakeCase = this._utilsAnchurus.toSnakeCase(_name);
         _builder.append(_snakeCase, "");
         _builder.append("\', ");
-        CharSequence _generateArray = this._utils.generateArray(((ViewInstance)expression));
+        CharSequence _generateArray = this._utilsAnchurus.generateArray(((ViewInstance)expression));
         _builder.append(_generateArray, "");
         _builder.append(") ");
         _switchResult = _builder;
