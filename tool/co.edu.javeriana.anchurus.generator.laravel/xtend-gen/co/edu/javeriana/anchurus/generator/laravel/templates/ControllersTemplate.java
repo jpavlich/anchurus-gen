@@ -67,6 +67,8 @@ public class ControllersTemplate extends SimpleTemplate<Controller> {
     _builder.append(_name, "");
     _builder.append("Controller extends Controller{");
     _builder.newLineIfNotEmpty();
+    _builder.append("\t");
+    _builder.newLine();
     {
       Iterable<Action> _actions = this._ismlModelNavigation.getActions(c);
       for(final Action func : _actions) {
@@ -138,7 +140,7 @@ public class ControllersTemplate extends SimpleTemplate<Controller> {
         _builder.append("\', ");
         CharSequence _generateArray = this._utilsAnchurus.generateArray(((ViewInstance)expression));
         _builder.append(_generateArray, "");
-        _builder.append(") ");
+        _builder.append("); ");
         _switchResult = _builder;
       }
     }

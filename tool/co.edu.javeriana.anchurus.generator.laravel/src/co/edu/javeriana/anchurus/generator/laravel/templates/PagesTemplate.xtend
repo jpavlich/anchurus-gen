@@ -63,7 +63,7 @@ class PagesTemplate extends SimpleTemplate<Page> {
 	
 	def CharSequence label(ViewInstance parte) '''
 		«IF parte.actionCall==null»
-		<label>«parte.parameters.get(0).valueTemplate»</label>
+		{!! Form::label ('«parte.id»' ,«parte.parameters.get(0).valueTemplate») !!}
 		«ELSE»
 		<p>Esto no est&iacute; generado</p>
 		«ENDIF»

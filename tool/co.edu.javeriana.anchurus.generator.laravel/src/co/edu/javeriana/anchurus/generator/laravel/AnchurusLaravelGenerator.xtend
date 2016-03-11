@@ -6,6 +6,7 @@ import co.edu.javeriana.anchurus.generator.laravel.generators.ModelsGenerator
 import co.edu.javeriana.anchurus.generator.laravel.generators.PagesGenerator
 import co.edu.javeriana.isml.generator.common.GeneratorSuite
 import co.edu.javeriana.isml.generator.common.OutputConfiguration
+import co.edu.javeriana.anchurus.generator.laravel.generators.RoutesGenerator
 
 class AnchurusLaravelGenerator extends GeneratorSuite{
 	
@@ -26,13 +27,17 @@ class AnchurusLaravelGenerator extends GeneratorSuite{
 	
 	@OutputConfiguration
 	public static final String MODELS = "models"
+	
+	@OutputConfiguration
+	public static final String ROUTES = "routes"
 		
 	override getGenerators() {
 		#{
 			new PagesGenerator,
 			new MigrationsGenerator,
 			new ModelsGenerator,
-			new ControllersGenerator
+			new ControllersGenerator,
+			new RoutesGenerator
 		}
 	}
 	

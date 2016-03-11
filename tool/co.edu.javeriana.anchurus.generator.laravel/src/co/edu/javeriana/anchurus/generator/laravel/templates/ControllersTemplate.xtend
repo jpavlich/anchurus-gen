@@ -37,6 +37,7 @@ class ControllersTemplate extends SimpleTemplate<Controller> {
 		use App\Http\Controllers\Controller;
 		
 		class «c.name»Controller extends Controller{
+			
 			«FOR func: c.actions»
 				«generarFuncionalidad(func)»
 			«ENDFOR»
@@ -60,7 +61,7 @@ class ControllersTemplate extends SimpleTemplate<Controller> {
 	
 	def CharSequence obtenerPagina(Expression expression) {
 		switch(expression){
-			ViewInstance:'''return view('co.edu.javeriana.«toSnakeCase(expression.type.typeSpecification.name)»', «generateArray(expression)») '''
+			ViewInstance:'''return view('co.edu.javeriana.«toSnakeCase(expression.type.typeSpecification.name)»', «generateArray(expression)»); '''
 			default:''''''
 		}
 		

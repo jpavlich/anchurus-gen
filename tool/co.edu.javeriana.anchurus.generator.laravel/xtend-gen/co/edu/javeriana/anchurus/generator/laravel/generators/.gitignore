@@ -6,3 +6,9 @@
 /.ControllersGenerator.java._trace
 /.ControllersGenerator.xtendbin
 /ControllersGenerator.java
+/.MigrationsGenerator.xtendbin
+/.ModelsGenerator.xtendbin
+/MigrationsGenerator.java
+/ModelsGenerator.java
+/.RoutesGenerator.java._trace
+/.RoutesTemplate.java._trace

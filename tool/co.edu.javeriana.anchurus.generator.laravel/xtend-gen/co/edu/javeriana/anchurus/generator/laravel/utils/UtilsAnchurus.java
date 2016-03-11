@@ -1,6 +1,8 @@
 package co.edu.javeriana.anchurus.generator.laravel.utils;
 
+import co.edu.javeriana.isml.isml.Attribute;
 import co.edu.javeriana.isml.isml.BoolValue;
+import co.edu.javeriana.isml.isml.Controller;
 import co.edu.javeriana.isml.isml.Expression;
 import co.edu.javeriana.isml.isml.FloatValue;
 import co.edu.javeriana.isml.isml.IntValue;
@@ -10,8 +12,10 @@ import co.edu.javeriana.isml.isml.NullValue;
 import co.edu.javeriana.isml.isml.Parameter;
 import co.edu.javeriana.isml.isml.Reference;
 import co.edu.javeriana.isml.isml.StringValue;
+import co.edu.javeriana.isml.isml.StructInstance;
 import co.edu.javeriana.isml.isml.Type;
 import co.edu.javeriana.isml.isml.TypeSpecification;
+import co.edu.javeriana.isml.isml.Variable;
 import co.edu.javeriana.isml.isml.VariableReference;
 import co.edu.javeriana.isml.isml.VariableTypeElement;
 import co.edu.javeriana.isml.isml.ViewInstance;
@@ -24,7 +28,6 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.xtend2.lib.StringConcatenation;
 import org.eclipse.xtext.xbase.lib.ExclusiveRange;
 import org.eclipse.xtext.xbase.lib.Extension;
-import org.eclipse.xtext.xbase.lib.InputOutput;
 
 @SuppressWarnings("all")
 public class UtilsAnchurus {
@@ -36,123 +39,195 @@ public class UtilsAnchurus {
     return CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, string);
   }
   
+  public String toKebabCase(final String string) {
+    return CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_HYPHEN, string);
+  }
+  
   public Calendar fecha() {
     return Calendar.getInstance();
   }
   
   public CharSequence valueTemplate(final Expression e) {
-    CharSequence _xblockexpression = null;
-    {
-      if ((e instanceof VariableReference)) {
-        Reference<?> _tail = ((VariableReference)e).getTail();
-        NamedElement _referencedElement = null;
-        if (_tail!=null) {
-          _referencedElement=_tail.getReferencedElement();
-        }
-        InputOutput.<NamedElement>println(_referencedElement);
+    CharSequence _switchResult = null;
+    boolean _matched = false;
+    if (!_matched) {
+      if (e instanceof BoolValue) {
+        _matched=true;
+        Object _literal = ((BoolValue)e).getLiteral();
+        _switchResult = _literal.toString();
       }
-      InputOutput.println();
-      CharSequence _switchResult = null;
-      boolean _matched = false;
-      if (!_matched) {
-        if (e instanceof BoolValue) {
-          _matched=true;
-          Object _literal = ((BoolValue)e).getLiteral();
-          _switchResult = _literal.toString();
-        }
-      }
-      if (!_matched) {
-        if (e instanceof FloatValue) {
-          _matched=true;
-          Object _literal = ((FloatValue)e).getLiteral();
-          _switchResult = _literal.toString();
-        }
-      }
-      if (!_matched) {
-        if (e instanceof IntValue) {
-          _matched=true;
-          Object _literal = ((IntValue)e).getLiteral();
-          _switchResult = _literal.toString();
-        }
-      }
-      if (!_matched) {
-        if (e instanceof NullValue) {
-          _matched=true;
-          StringConcatenation _builder = new StringConcatenation();
-          _builder.append("NULL");
-          _switchResult = _builder;
-        }
-      }
-      if (!_matched) {
-        if (e instanceof StringValue) {
-          _matched=true;
-          StringConcatenation _builder = new StringConcatenation();
-          _builder.append(" ");
-          _builder.append("\"");
-          Object _literal = ((StringValue)e).getLiteral();
-          String _string = _literal.toString();
-          _builder.append(_string, " ");
-          _builder.append("\" ");
-          _switchResult = _builder;
-        }
-      }
-      if (!_matched) {
-        if (e instanceof MethodCall) {
-          _matched=true;
-          StringConcatenation _builder = new StringConcatenation();
-          _builder.append("call");
-          _switchResult = _builder;
-        }
-      }
-      if (!_matched) {
-        if (e instanceof VariableReference) {
-          _matched=true;
-          StringConcatenation _builder = new StringConcatenation();
-          {
-            boolean _hasQueue = this.hasQueue(((VariableReference)e));
-            if (_hasQueue) {
-              Reference<?> _tail_1 = ((VariableReference)e).getTail();
-              NamedElement _referencedElement_1 = _tail_1.getReferencedElement();
-              String _name = _referencedElement_1.getName();
-              _builder.append(_name, "");
-            } else {
-              VariableTypeElement _referencedElement_2 = ((VariableReference)e).getReferencedElement();
-              String _name_1 = _referencedElement_2.getName();
-              _builder.append(_name_1, "");
-            }
-          }
-          _switchResult = _builder;
-        }
-      }
-      if (!_matched) {
-        if (e instanceof ViewInstance) {
-          _matched=true;
-          StringConcatenation _builder = new StringConcatenation();
-          _builder.append("return view(\'co.edu.javeriana.");
-          Type _type = ((ViewInstance)e).getType();
-          TypeSpecification _typeSpecification = this._ismlModelNavigation.getTypeSpecification(_type);
-          String _name = _typeSpecification.getName();
-          String _snakeCase = this.toSnakeCase(_name);
-          _builder.append(_snakeCase, "");
-          _builder.append("\', ");
-          CharSequence _generateArray = this.generateArray(((ViewInstance)e));
-          _builder.append(_generateArray, "");
-          _builder.append(") ");
-          _switchResult = _builder;
-        }
-      }
-      if (!_matched) {
-        _switchResult = e.toString();
-      }
-      _xblockexpression = _switchResult;
     }
-    return _xblockexpression;
+    if (!_matched) {
+      if (e instanceof FloatValue) {
+        _matched=true;
+        Object _literal = ((FloatValue)e).getLiteral();
+        _switchResult = _literal.toString();
+      }
+    }
+    if (!_matched) {
+      if (e instanceof IntValue) {
+        _matched=true;
+        Object _literal = ((IntValue)e).getLiteral();
+        _switchResult = _literal.toString();
+      }
+    }
+    if (!_matched) {
+      if (e instanceof NullValue) {
+        _matched=true;
+        StringConcatenation _builder = new StringConcatenation();
+        _builder.append("NULL");
+        _switchResult = _builder;
+      }
+    }
+    if (!_matched) {
+      if (e instanceof StringValue) {
+        _matched=true;
+        StringConcatenation _builder = new StringConcatenation();
+        Object _literal = ((StringValue)e).getLiteral();
+        String _string = _literal.toString();
+        _builder.append(_string, "");
+        _switchResult = _builder;
+      }
+    }
+    if (!_matched) {
+      if (e instanceof MethodCall) {
+        _matched=true;
+        StringConcatenation _builder = new StringConcatenation();
+        _builder.append("call");
+        _switchResult = _builder;
+      }
+    }
+    if (!_matched) {
+      if (e instanceof VariableReference) {
+        _matched=true;
+        StringConcatenation _builder = new StringConcatenation();
+        CharSequence _generateReferencedElement = this.generateReferencedElement(((VariableReference)e));
+        _builder.append(_generateReferencedElement, "");
+        _switchResult = _builder;
+      }
+    }
+    if (!_matched) {
+      if (e instanceof ViewInstance) {
+        _matched=true;
+        StringConcatenation _builder = new StringConcatenation();
+        _builder.append("return view(\'co.edu.javeriana.");
+        Type _type = ((ViewInstance)e).getType();
+        TypeSpecification _typeSpecification = this._ismlModelNavigation.getTypeSpecification(_type);
+        String _name = _typeSpecification.getName();
+        String _snakeCase = this.toSnakeCase(_name);
+        _builder.append(_snakeCase, "");
+        _builder.append("\', ");
+        CharSequence _generateArray = this.generateArray(((ViewInstance)e));
+        _builder.append(_generateArray, "");
+        _builder.append(") ");
+        _switchResult = _builder;
+      }
+    }
+    if (!_matched) {
+      if (e instanceof StructInstance) {
+        _matched=true;
+        StringConcatenation _builder = new StringConcatenation();
+        _builder.append("new ");
+        Type _type = ((StructInstance)e).getType();
+        TypeSpecification _typeSpecification = this._ismlModelNavigation.getTypeSpecification(_type);
+        String _name = _typeSpecification.getName();
+        _builder.append(_name, "");
+        _switchResult = _builder;
+      }
+    }
+    if (!_matched) {
+      _switchResult = e.toString();
+    }
+    return _switchResult;
+  }
+  
+  public CharSequence generateReferencedElement(final VariableReference reference) {
+    CharSequence _switchResult = null;
+    VariableTypeElement _referencedElement = reference.getReferencedElement();
+    boolean _matched = false;
+    if (!_matched) {
+      if (_referencedElement instanceof Attribute) {
+        _matched=true;
+        StringConcatenation _builder = new StringConcatenation();
+        _builder.append("$this->");
+        {
+          boolean _hasTail = this.hasTail(reference);
+          if (_hasTail) {
+            CharSequence _generateTailedElement = this.generateTailedElement(reference);
+            _builder.append(_generateTailedElement, "");
+          } else {
+            VariableTypeElement _referencedElement_1 = reference.getReferencedElement();
+            String _name = _referencedElement_1.getName();
+            _builder.append(_name, "");
+          }
+        }
+        _switchResult = _builder;
+      }
+    }
+    if (!_matched) {
+      if (_referencedElement instanceof Variable) {
+        _matched=true;
+        StringConcatenation _builder = new StringConcatenation();
+        _builder.append("$");
+        {
+          boolean _hasTail = this.hasTail(reference);
+          if (_hasTail) {
+            CharSequence _generateTailedElement = this.generateTailedElement(reference);
+            _builder.append(_generateTailedElement, "");
+          } else {
+            VariableTypeElement _referencedElement_1 = reference.getReferencedElement();
+            String _name = _referencedElement_1.getName();
+            _builder.append(_name, "");
+          }
+        }
+        _switchResult = _builder;
+      }
+    }
+    if (!_matched) {
+      if (_referencedElement instanceof Parameter) {
+        _matched=true;
+        StringConcatenation _builder = new StringConcatenation();
+        _builder.append("$");
+        {
+          boolean _hasTail = this.hasTail(reference);
+          if (_hasTail) {
+            CharSequence _generateTailedElement = this.generateTailedElement(reference);
+            _builder.append(_generateTailedElement, "");
+          } else {
+            VariableTypeElement _referencedElement_1 = reference.getReferencedElement();
+            String _name = _referencedElement_1.getName();
+            _builder.append(_name, "");
+          }
+        }
+        _switchResult = _builder;
+      }
+    }
+    if (!_matched) {
+      _switchResult = reference.toString();
+    }
+    return _switchResult;
+  }
+  
+  public CharSequence generateTailedElement(final VariableReference vr) {
+    VariableTypeElement _referencedElement = vr.getReferencedElement();
+    String str = _referencedElement.getName();
+    String accumulate = str;
+    Reference<? extends NamedElement> current = vr.getTail();
+    while ((!Objects.equal(current, null))) {
+      {
+        String _accumulate = accumulate;
+        NamedElement _referencedElement_1 = current.getReferencedElement();
+        String _name = _referencedElement_1.getName();
+        String _plus = ("->" + _name);
+        accumulate = (_accumulate + _plus);
+        Reference<? extends NamedElement> _tail = current.getTail();
+        current = _tail;
+      }
+    }
+    return accumulate;
   }
   
   public CharSequence generateArray(final ViewInstance instance) {
-    String cadena1 = "[";
-    String cadena2 = "]";
-    String cadena3 = "=>";
     String acumula = "";
     String cadena = "";
     EList<Expression> _parameters = instance.getParameters();
@@ -165,29 +240,40 @@ public class UtilsAnchurus {
       EList<Parameter> _parameters_1 = _typeSpecification.getParameters();
       Parameter _get = _parameters_1.get((i).intValue());
       String _name = _get.getName();
-      String _plus = (_name + cadena3);
+      String _plus = ("\'" + _name);
+      String _plus_1 = (_plus + "\'");
+      String _plus_2 = (_plus_1 + "=>");
       EList<Expression> _parameters_2 = instance.getParameters();
       Expression _get_1 = _parameters_2.get((i).intValue());
       CharSequence _valueTemplate = this.valueTemplate(_get_1);
-      String _plus_1 = (_plus + _valueTemplate);
-      String _plus_2 = (_plus_1 + ",");
-      acumula = (_acumula + _plus_2);
+      String _plus_3 = (_plus_2 + _valueTemplate);
+      String _plus_4 = (_plus_3 + ", ");
+      acumula = (_acumula + _plus_4);
     }
     int _length = acumula.length();
-    int _minus = (_length - 1);
+    int _minus = (_length - 2);
     String _substring = acumula.substring(0, _minus);
     acumula = _substring;
-    cadena = ((cadena1 + acumula) + cadena2);
+    cadena = (("[" + acumula) + "]");
     return cadena;
   }
   
-  public boolean hasQueue(final VariableReference vr) {
-    Reference<?> _tail = vr.getTail();
+  public boolean hasTail(final VariableReference vr) {
+    Reference<? extends NamedElement> _tail = vr.getTail();
     boolean _notEquals = (!Objects.equal(_tail, null));
     if (_notEquals) {
       return true;
     } else {
       return false;
     }
+  }
+  
+  public String namedUrlForController(final Controller c) {
+    String guia = "-controller";
+    String nombreCompl = c.getName();
+    String cadena = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_HYPHEN, nombreCompl);
+    String _replaceFirst = cadena.replaceFirst(guia, "");
+    cadena = _replaceFirst;
+    return cadena;
   }
 }

@@ -1,16 +1,16 @@
 @extends('layouts.app')
 @section('content')
 <div id= "panel1" >
-	<label>Desayuno</label>
-	<label>{{ $dieta->desayuno }} </label>
-	<label>Almuerzo</label>
-	<label>{{ $dieta->almuerzo }} </label>
-	<label>Cena</label>
-	<label>{{ $dieta->cena }} </label>
-	<label>Merienda</label>
-	<label>{{ $dieta->merienda }} </label>
-	<label>Patologia</label>
-	<label>{{ $dieta->patologia }} </label>
+	{!! Form::label ('label2' ,Desayuno) !!}
+	{!! Form::label ('label3' ,$dieta->desayuno) !!}
+	{!! Form::label ('label4' ,Almuerzo) !!}
+	{!! Form::label ('label5' ,$dieta->almuerzo) !!}
+	{!! Form::label ('label6' ,Cena) !!}
+	{!! Form::label ('label7' ,$dieta->cena) !!}
+	{!! Form::label ('label8' ,Merienda) !!}
+	{!! Form::label ('label9' ,$dieta->merienda) !!}
+	{!! Form::label ('label10' ,Patologia) !!}
+	{!! Form::label ('label11' ,$dieta->patologia) !!}
 	{!! Form::submit ('Ok') !!}
 	
 </div>
