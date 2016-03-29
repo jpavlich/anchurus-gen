@@ -6,10 +6,12 @@ import co.edu.javeriana.isml.isml.Controller;
 import co.edu.javeriana.isml.isml.Expression;
 import co.edu.javeriana.isml.isml.FloatValue;
 import co.edu.javeriana.isml.isml.IntValue;
+import co.edu.javeriana.isml.isml.Method;
 import co.edu.javeriana.isml.isml.MethodCall;
 import co.edu.javeriana.isml.isml.NamedElement;
 import co.edu.javeriana.isml.isml.NullValue;
 import co.edu.javeriana.isml.isml.Parameter;
+import co.edu.javeriana.isml.isml.ParameterizedReference;
 import co.edu.javeriana.isml.isml.Reference;
 import co.edu.javeriana.isml.isml.StringValue;
 import co.edu.javeriana.isml.isml.StructInstance;
@@ -28,6 +30,7 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.xtend2.lib.StringConcatenation;
 import org.eclipse.xtext.xbase.lib.ExclusiveRange;
 import org.eclipse.xtext.xbase.lib.Extension;
+import org.eclipse.xtext.xbase.lib.InputOutput;
 
 @SuppressWarnings("all")
 public class UtilsAnchurus {
@@ -101,8 +104,18 @@ public class UtilsAnchurus {
       if (e instanceof VariableReference) {
         _matched=true;
         StringConcatenation _builder = new StringConcatenation();
-        CharSequence _generateReferencedElement = this.generateReferencedElement(((VariableReference)e));
-        _builder.append(_generateReferencedElement, "");
+        {
+          boolean _hasTail = this.hasTail(((Reference)e));
+          if (_hasTail) {
+            CharSequence _generateTailedElement = this.generateTailedElement(((VariableReference)e));
+            _builder.append(_generateTailedElement, "");
+          } else {
+            _builder.append("$");
+            VariableTypeElement _referencedElement = ((VariableReference)e).getReferencedElement();
+            String _name = _referencedElement.getName();
+            _builder.append(_name, "");
+          }
+        }
         _switchResult = _builder;
       }
     }
@@ -141,26 +154,37 @@ public class UtilsAnchurus {
     return _switchResult;
   }
   
-  public CharSequence generateReferencedElement(final VariableReference reference) {
+  public CharSequence generateTailedElement(final VariableReference vr) {
+    CharSequence _generateReferencedElement = this.generateReferencedElement(vr);
+    String str = _generateReferencedElement.toString();
+    String accumulate = str;
+    Reference<? extends NamedElement> current = vr.getTail();
+    while ((!Objects.equal(current, null))) {
+      {
+        String _accumulate = accumulate;
+        CharSequence _generateReferencedElement_1 = this.generateReferencedElement(current);
+        String _plus = ("->" + _generateReferencedElement_1);
+        accumulate = (_accumulate + _plus);
+        Reference<? extends NamedElement> _tail = current.getTail();
+        current = _tail;
+      }
+    }
+    InputOutput.<String>println(accumulate);
+    return accumulate;
+  }
+  
+  public CharSequence generateReferencedElement(final Reference reference) {
     CharSequence _switchResult = null;
-    VariableTypeElement _referencedElement = reference.getReferencedElement();
+    NamedElement _referencedElement = reference.getReferencedElement();
     boolean _matched = false;
     if (!_matched) {
       if (_referencedElement instanceof Attribute) {
         _matched=true;
         StringConcatenation _builder = new StringConcatenation();
         _builder.append("$this->");
-        {
-          boolean _hasTail = this.hasTail(reference);
-          if (_hasTail) {
-            CharSequence _generateTailedElement = this.generateTailedElement(reference);
-            _builder.append(_generateTailedElement, "");
-          } else {
-            VariableTypeElement _referencedElement_1 = reference.getReferencedElement();
-            String _name = _referencedElement_1.getName();
-            _builder.append(_name, "");
-          }
-        }
+        NamedElement _referencedElement_1 = reference.getReferencedElement();
+        String _name = _referencedElement_1.getName();
+        _builder.append(_name, "");
         _switchResult = _builder;
       }
     }
@@ -169,17 +193,9 @@ public class UtilsAnchurus {
         _matched=true;
         StringConcatenation _builder = new StringConcatenation();
         _builder.append("$");
-        {
-          boolean _hasTail = this.hasTail(reference);
-          if (_hasTail) {
-            CharSequence _generateTailedElement = this.generateTailedElement(reference);
-            _builder.append(_generateTailedElement, "");
-          } else {
-            VariableTypeElement _referencedElement_1 = reference.getReferencedElement();
-            String _name = _referencedElement_1.getName();
-            _builder.append(_name, "");
-          }
-        }
+        NamedElement _referencedElement_1 = reference.getReferencedElement();
+        String _name = _referencedElement_1.getName();
+        _builder.append(_name, "");
         _switchResult = _builder;
       }
     }
@@ -188,17 +204,23 @@ public class UtilsAnchurus {
         _matched=true;
         StringConcatenation _builder = new StringConcatenation();
         _builder.append("$");
-        {
-          boolean _hasTail = this.hasTail(reference);
-          if (_hasTail) {
-            CharSequence _generateTailedElement = this.generateTailedElement(reference);
-            _builder.append(_generateTailedElement, "");
-          } else {
-            VariableTypeElement _referencedElement_1 = reference.getReferencedElement();
-            String _name = _referencedElement_1.getName();
-            _builder.append(_name, "");
-          }
-        }
+        NamedElement _referencedElement_1 = reference.getReferencedElement();
+        String _name = _referencedElement_1.getName();
+        _builder.append(_name, "");
+        _switchResult = _builder;
+      }
+    }
+    if (!_matched) {
+      if (_referencedElement instanceof Method) {
+        _matched=true;
+        StringConcatenation _builder = new StringConcatenation();
+        NamedElement _referencedElement_1 = reference.getReferencedElement();
+        String _name = _referencedElement_1.getName();
+        _builder.append(_name, "");
+        _builder.append("(");
+        CharSequence _parameters = this.getParameters(((ParameterizedReference) reference));
+        _builder.append(_parameters, "");
+        _builder.append(")");
         _switchResult = _builder;
       }
     }
@@ -208,33 +230,50 @@ public class UtilsAnchurus {
     return _switchResult;
   }
   
-  public CharSequence generateTailedElement(final VariableReference vr) {
-    VariableTypeElement _referencedElement = vr.getReferencedElement();
-    String str = _referencedElement.getName();
-    String accumulate = str;
-    Reference<? extends NamedElement> current = vr.getTail();
-    while ((!Objects.equal(current, null))) {
-      {
-        String _accumulate = accumulate;
-        NamedElement _referencedElement_1 = current.getReferencedElement();
-        String _name = _referencedElement_1.getName();
-        String _plus = ("->" + _name);
-        accumulate = (_accumulate + _plus);
-        Reference<? extends NamedElement> _tail = current.getTail();
-        current = _tail;
+  public CharSequence getParameters(final ParameterizedReference<?> reference) {
+    StringConcatenation _builder = new StringConcatenation();
+    {
+      EList<Expression> _parameters = reference.getParameters();
+      int _size = _parameters.size();
+      boolean _notEquals = (_size != 0);
+      if (_notEquals) {
+        {
+          EList<Expression> _parameters_1 = reference.getParameters();
+          boolean _hasElements = false;
+          for(final Expression param : _parameters_1) {
+            if (!_hasElements) {
+              _hasElements = true;
+            } else {
+              _builder.appendImmediate(",", "");
+            }
+            _builder.append("$");
+            CharSequence _valueTemplate = this.valueTemplate(param);
+            _builder.append(_valueTemplate, "");
+          }
+        }
       }
     }
-    return accumulate;
+    return _builder;
+  }
+  
+  public boolean hasTail(final Reference r) {
+    Reference _tail = r.getTail();
+    boolean _notEquals = (!Objects.equal(_tail, null));
+    if (_notEquals) {
+      return true;
+    } else {
+      return false;
+    }
   }
   
   public CharSequence generateArray(final ViewInstance instance) {
-    String acumula = "";
-    String cadena = "";
+    String accumulate = "";
+    String string = "";
     EList<Expression> _parameters = instance.getParameters();
     int _size = _parameters.size();
     ExclusiveRange _doubleDotLessThan = new ExclusiveRange(0, _size, true);
     for (final Integer i : _doubleDotLessThan) {
-      String _acumula = acumula;
+      String _accumulate = accumulate;
       Type _type = instance.getType();
       TypeSpecification _typeSpecification = this._ismlModelNavigation.getTypeSpecification(_type);
       EList<Parameter> _parameters_1 = _typeSpecification.getParameters();
@@ -248,32 +287,22 @@ public class UtilsAnchurus {
       CharSequence _valueTemplate = this.valueTemplate(_get_1);
       String _plus_3 = (_plus_2 + _valueTemplate);
       String _plus_4 = (_plus_3 + ", ");
-      acumula = (_acumula + _plus_4);
+      accumulate = (_accumulate + _plus_4);
     }
-    int _length = acumula.length();
+    int _length = accumulate.length();
     int _minus = (_length - 2);
-    String _substring = acumula.substring(0, _minus);
-    acumula = _substring;
-    cadena = (("[" + acumula) + "]");
-    return cadena;
-  }
-  
-  public boolean hasTail(final VariableReference vr) {
-    Reference<? extends NamedElement> _tail = vr.getTail();
-    boolean _notEquals = (!Objects.equal(_tail, null));
-    if (_notEquals) {
-      return true;
-    } else {
-      return false;
-    }
+    String _substring = accumulate.substring(0, _minus);
+    accumulate = _substring;
+    string = (("[" + accumulate) + "]");
+    return string;
   }
   
   public String namedUrlForController(final Controller c) {
     String guia = "-controller";
     String nombreCompl = c.getName();
     String cadena = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_HYPHEN, nombreCompl);
-    String _replaceFirst = cadena.replaceFirst(guia, "");
-    cadena = _replaceFirst;
+    String _cadena = cadena;
+    cadena = (_cadena + guia);
     return cadena;
   }
 }

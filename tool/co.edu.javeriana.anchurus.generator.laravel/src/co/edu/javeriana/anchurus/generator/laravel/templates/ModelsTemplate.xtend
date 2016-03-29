@@ -19,6 +19,7 @@ class ModelsTemplate extends SimpleTemplate<Entity> {
 
 	override def CharSequence template(Entity e) '''
 		<?php
+		namespace App;
 		use Illuminate\Database\Eloquent\Model;	
 		
 		class «e.name» extends Model{

@@ -95,7 +95,7 @@
 			[
 				{
 					name: "routes",
-					outputDirectory:"../laravelTestProject/app/",
+					outputDirectory:"../laravelTestProject/app/Http",
 					
 					createOutputDirectory:true,
 					cleanUpDerivedResources:true,

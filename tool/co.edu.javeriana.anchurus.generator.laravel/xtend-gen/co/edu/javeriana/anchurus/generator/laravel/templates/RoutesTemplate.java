@@ -4,14 +4,27 @@ import co.edu.javeriana.anchurus.generator.laravel.utils.UtilsAnchurus;
 import co.edu.javeriana.isml.generator.common.SimpleTemplate;
 import co.edu.javeriana.isml.isml.Action;
 import co.edu.javeriana.isml.isml.Controller;
+import co.edu.javeriana.isml.isml.Entity;
+import co.edu.javeriana.isml.isml.NamedElement;
 import co.edu.javeriana.isml.isml.Parameter;
+import co.edu.javeriana.isml.isml.Type;
+import co.edu.javeriana.isml.isml.TypeSpecification;
+import co.edu.javeriana.isml.isml.TypedElement;
+import co.edu.javeriana.isml.scoping.IsmlModelNavigation;
 import com.google.common.collect.Iterables;
+import com.google.common.collect.Iterators;
 import com.google.inject.Inject;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.common.util.TreeIterator;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtend2.lib.StringConcatenation;
 import org.eclipse.xtext.xbase.lib.Extension;
-import org.eclipse.xtext.xbase.lib.InputOutput;
+import org.eclipse.xtext.xbase.lib.IteratorExtensions;
 
 @SuppressWarnings("all")
 public class RoutesTemplate extends SimpleTemplate<List<Controller>> {
@@ -19,9 +32,37 @@ public class RoutesTemplate extends SimpleTemplate<List<Controller>> {
   @Extension
   private UtilsAnchurus _utilsAnchurus;
   
+  @Inject
+  @Extension
+  private IsmlModelNavigation _ismlModelNavigation;
+  
+  private List<TypedElement> imports = new ArrayList<TypedElement>();
+  
+  private Set<Entity> entitySubGroup = new LinkedHashSet<Entity>();
+  
   @Override
   public void preprocess(final List<Controller> lc) {
-    InputOutput.<String>println("funciona esto?");
+    for (final Controller ctrl : lc) {
+      {
+        TreeIterator<EObject> _eAllContents = ctrl.eAllContents();
+        Iterator<TypedElement> _filter = Iterators.<TypedElement>filter(_eAllContents, TypedElement.class);
+        List<TypedElement> descendants = IteratorExtensions.<TypedElement>toList(_filter);
+        this.imports.addAll(descendants);
+        for (final TypedElement desc : descendants) {
+          {
+            Type _type = desc.getType();
+            TypeSpecification _typeSpecification = null;
+            if (_type!=null) {
+              _typeSpecification=this._ismlModelNavigation.getTypeSpecification(_type);
+            }
+            final NamedElement e = _typeSpecification;
+            if ((e instanceof Entity)) {
+              this.entitySubGroup.add(((Entity)e));
+            }
+          }
+        }
+      }
+    }
   }
   
   @Override
@@ -29,6 +70,13 @@ public class RoutesTemplate extends SimpleTemplate<List<Controller>> {
     StringConcatenation _builder = new StringConcatenation();
     _builder.append("<?php");
     _builder.newLine();
+    _builder.append("Route::get(\'/\', function () {");
+    _builder.newLine();
+    _builder.append("\t\t    ");
+    _builder.append("return view(\'welcome\');");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("});");
     _builder.newLine();
     {
       for(final Controller ctrl : e) {

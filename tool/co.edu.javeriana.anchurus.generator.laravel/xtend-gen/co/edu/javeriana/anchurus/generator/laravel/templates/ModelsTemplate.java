@@ -30,6 +30,8 @@ public class ModelsTemplate extends SimpleTemplate<Entity> {
     StringConcatenation _builder = new StringConcatenation();
     _builder.append("<?php");
     _builder.newLine();
+    _builder.append("namespace App;");
+    _builder.newLine();
     _builder.append("use Illuminate\\Database\\Eloquent\\Model;\t");
     _builder.newLine();
     _builder.newLine();
