@@ -30,7 +30,6 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.xtend2.lib.StringConcatenation;
 import org.eclipse.xtext.xbase.lib.ExclusiveRange;
 import org.eclipse.xtext.xbase.lib.Extension;
-import org.eclipse.xtext.xbase.lib.InputOutput;
 
 @SuppressWarnings("all")
 public class UtilsAnchurus {
@@ -169,7 +168,6 @@ public class UtilsAnchurus {
         current = _tail;
       }
     }
-    InputOutput.<String>println(accumulate);
     return accumulate;
   }
   

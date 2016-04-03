@@ -10,6 +10,7 @@ import co.edu.javeriana.isml.isml.Expression;
 import co.edu.javeriana.isml.isml.MethodStatement;
 import co.edu.javeriana.isml.isml.NamedElement;
 import co.edu.javeriana.isml.isml.Parameter;
+import co.edu.javeriana.isml.isml.ParameterizedType;
 import co.edu.javeriana.isml.isml.Service;
 import co.edu.javeriana.isml.isml.Show;
 import co.edu.javeriana.isml.isml.Type;
@@ -31,6 +32,8 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtend2.lib.StringConcatenation;
+import org.eclipse.xtext.naming.IQualifiedNameProvider;
+import org.eclipse.xtext.naming.QualifiedName;
 import org.eclipse.xtext.xbase.lib.Extension;
 import org.eclipse.xtext.xbase.lib.IteratorExtensions;
 
@@ -47,6 +50,10 @@ public class ControllersTemplate extends SimpleTemplate<Controller> {
   @Inject
   @Extension
   private UtilsAnchurus _utilsAnchurus;
+  
+  @Inject
+  @Extension
+  private IQualifiedNameProvider _iQualifiedNameProvider;
   
   private List<TypedElement> imports = new ArrayList<TypedElement>();
   
@@ -100,7 +107,7 @@ public class ControllersTemplate extends SimpleTemplate<Controller> {
     _builder.newLine();
     {
       for(final Entity elm : this.entitySubGroup) {
-        _builder.append("use App\\");
+        _builder.append("use App\\co\\edu\\javeriana\\");
         String _name = elm.getName();
         _builder.append(_name, "");
         _builder.append(";");
@@ -132,6 +139,56 @@ public class ControllersTemplate extends SimpleTemplate<Controller> {
       }
     }
     _builder.append("\t");
+    _builder.append("public function __construct(){");
+    _builder.newLine();
+    {
+      EList<Action> _body_1 = c.getBody();
+      Iterable<Attribute> _filter_1 = Iterables.<Attribute>filter(_body_1, Attribute.class);
+      for(final Attribute attr_1 : _filter_1) {
+        {
+          Type _type = attr_1.getType();
+          TypeSpecification _typeSpecification = this._ismlModelNavigation.getTypeSpecification(_type);
+          String _name_3 = _typeSpecification.getName();
+          boolean _equalsIgnoreCase = _name_3.equalsIgnoreCase("persistence");
+          if (_equalsIgnoreCase) {
+            _builder.append("\t\t");
+            _builder.append("$this->");
+            String _name_4 = attr_1.getName();
+            _builder.append(_name_4, "\t\t");
+            _builder.append(" = new ");
+            Type _type_1 = attr_1.getType();
+            TypeSpecification _typeSpecification_1 = this._ismlModelNavigation.getTypeSpecification(_type_1);
+            String _name_5 = _typeSpecification_1.getName();
+            _builder.append(_name_5, "\t\t");
+            _builder.append("(\'App\\");
+            Type _type_2 = attr_1.getType();
+            ParameterizedType _cast = this._ismlModelNavigation.<Type, ParameterizedType>cast(_type_2, ParameterizedType.class);
+            EList<Type> _typeParameters = _cast.getTypeParameters();
+            Type _get = _typeParameters.get(0);
+            TypeSpecification _typeSpecification_2 = this._ismlModelNavigation.getTypeSpecification(_get);
+            QualifiedName _fullyQualifiedName = this._iQualifiedNameProvider.getFullyQualifiedName(_typeSpecification_2);
+            String _string = _fullyQualifiedName.toString("\\");
+            _builder.append(_string, "\t\t");
+            _builder.append("\');");
+            _builder.newLineIfNotEmpty();
+          } else {
+            _builder.append("\t\t");
+            _builder.append("$this->");
+            String _name_6 = attr_1.getName();
+            _builder.append(_name_6, "\t\t");
+            _builder.append(" = new ");
+            Type _type_3 = attr_1.getType();
+            TypeSpecification _typeSpecification_3 = this._ismlModelNavigation.getTypeSpecification(_type_3);
+            String _name_7 = _typeSpecification_3.getName();
+            _builder.append(_name_7, "\t\t");
+            _builder.append(";");
+            _builder.newLineIfNotEmpty();
+          }
+        }
+      }
+    }
+    _builder.append("\t");
+    _builder.append("}");
     _builder.newLine();
     {
       Iterable<Action> _actions = this._ismlModelNavigation.getActions(c);
@@ -152,11 +209,6 @@ public class ControllersTemplate extends SimpleTemplate<Controller> {
     _builder.append("private $");
     String _name = attribute.getName();
     _builder.append(_name, "");
-    _builder.append(" = new ");
-    Type _type = attribute.getType();
-    TypeSpecification _typeSpecification = this._ismlModelNavigation.getTypeSpecification(_type);
-    String _name_1 = _typeSpecification.getName();
-    _builder.append(_name_1, "");
     _builder.append(";");
     _builder.newLineIfNotEmpty();
     return _builder;

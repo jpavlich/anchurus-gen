@@ -23,7 +23,7 @@ class ModelsGenerator extends SimpleGenerator<Entity> {
 	}
 	
 	override protected getFileName(Entity e) {
-		return e.name + ".php"
+		return e.eContainer?.fullyQualifiedName.toString("/")+ "/" + e.name + ".php"
 	}
 
 }

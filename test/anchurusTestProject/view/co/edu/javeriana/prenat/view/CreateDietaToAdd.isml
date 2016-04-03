@@ -9,6 +9,5 @@ page CreateDietaToAdd(Any container, Collection<Dieta> collection, Dieta dieta) 
 		Text("Patologia", dieta.patologia, 10, 1);
 		
 		Button("Save") -> saveDieta(dieta);
-	//	Button("Cancel", false) -> DefaultPageDispatcher.edit(container);
 	}
 }

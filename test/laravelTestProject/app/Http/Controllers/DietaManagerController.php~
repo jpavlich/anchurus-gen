@@ -7,13 +7,11 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\co\edu\javeriana\Dieta;
+use App\Dieta;
 use App\Http\Controllers\Persistence;
 class DietaManagerController extends Controller{
-	private $persistence;
-	public function __construct(){
-		$this->persistence = new Persistence('App\co\edu\javeriana\Dieta');
-	}
+	private $persistence = new Persistence;
+	
 	public function initTest(){
 	}
 	public function listAll(){

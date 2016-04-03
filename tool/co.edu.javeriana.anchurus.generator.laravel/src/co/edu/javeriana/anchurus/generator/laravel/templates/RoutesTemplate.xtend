@@ -13,11 +13,13 @@ import java.util.ArrayList
 import java.util.LinkedHashSet
 import java.util.List
 import java.util.Set
+import org.eclipse.xtext.naming.IQualifiedNameProvider
 
 class RoutesTemplate extends SimpleTemplate<List<Controller>> {
 	
 	@Inject extension UtilsAnchurus
 	@Inject extension IsmlModelNavigation
+	@Inject extension IQualifiedNameProvider
 	
 	List<TypedElement> imports= new ArrayList<TypedElement>();
 	Set<Entity> entitySubGroup= new LinkedHashSet<Entity>();
@@ -38,9 +40,11 @@ class RoutesTemplate extends SimpleTemplate<List<Controller>> {
 			    return view('welcome');
 			});
 	«FOR ctrl: e»
+		«IF !ctrl.name.equals("DefaultPageDispatcher")»
 		«FOR act: ctrl.body.filter(Action)»
-		Route::match(['GET', 'POST'], '«namedUrlForController(ctrl)»/«toKebabCase(act.name)»«generateParameters(act)»', '«ctrl.name»@«act.name»');
+		Route::match(['GET', 'POST'], '«namedUrlForController(ctrl)»/«toKebabCase(act.name)»«generateParameters(act)»', '«ctrl.name»Controller@«act.name»');
 		«ENDFOR»
+		«ENDIF»
 	«ENDFOR»
 	'''
 	

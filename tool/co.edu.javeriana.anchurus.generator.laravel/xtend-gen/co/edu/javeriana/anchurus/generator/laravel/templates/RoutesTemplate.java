@@ -23,6 +23,7 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtend2.lib.StringConcatenation;
+import org.eclipse.xtext.naming.IQualifiedNameProvider;
 import org.eclipse.xtext.xbase.lib.Extension;
 import org.eclipse.xtext.xbase.lib.IteratorExtensions;
 
@@ -35,6 +36,10 @@ public class RoutesTemplate extends SimpleTemplate<List<Controller>> {
   @Inject
   @Extension
   private IsmlModelNavigation _ismlModelNavigation;
+  
+  @Inject
+  @Extension
+  private IQualifiedNameProvider _iQualifiedNameProvider;
   
   private List<TypedElement> imports = new ArrayList<TypedElement>();
   
@@ -81,26 +86,33 @@ public class RoutesTemplate extends SimpleTemplate<List<Controller>> {
     {
       for(final Controller ctrl : e) {
         {
-          EList<Action> _body = ctrl.getBody();
-          Iterable<Action> _filter = Iterables.<Action>filter(_body, Action.class);
-          for(final Action act : _filter) {
-            _builder.append("Route::match([\'GET\', \'POST\'], \'");
-            String _namedUrlForController = this._utilsAnchurus.namedUrlForController(ctrl);
-            _builder.append(_namedUrlForController, "");
-            _builder.append("/");
-            String _name = act.getName();
-            String _kebabCase = this._utilsAnchurus.toKebabCase(_name);
-            _builder.append(_kebabCase, "");
-            CharSequence _generateParameters = this.generateParameters(act);
-            _builder.append(_generateParameters, "");
-            _builder.append("\', \'");
-            String _name_1 = ctrl.getName();
-            _builder.append(_name_1, "");
-            _builder.append("@");
-            String _name_2 = act.getName();
-            _builder.append(_name_2, "");
-            _builder.append("\');");
-            _builder.newLineIfNotEmpty();
+          String _name = ctrl.getName();
+          boolean _equals = _name.equals("DefaultPageDispatcher");
+          boolean _not = (!_equals);
+          if (_not) {
+            {
+              EList<Action> _body = ctrl.getBody();
+              Iterable<Action> _filter = Iterables.<Action>filter(_body, Action.class);
+              for(final Action act : _filter) {
+                _builder.append("Route::match([\'GET\', \'POST\'], \'");
+                String _namedUrlForController = this._utilsAnchurus.namedUrlForController(ctrl);
+                _builder.append(_namedUrlForController, "");
+                _builder.append("/");
+                String _name_1 = act.getName();
+                String _kebabCase = this._utilsAnchurus.toKebabCase(_name_1);
+                _builder.append(_kebabCase, "");
+                CharSequence _generateParameters = this.generateParameters(act);
+                _builder.append(_generateParameters, "");
+                _builder.append("\', \'");
+                String _name_2 = ctrl.getName();
+                _builder.append(_name_2, "");
+                _builder.append("Controller@");
+                String _name_3 = act.getName();
+                _builder.append(_name_3, "");
+                _builder.append("\');");
+                _builder.newLineIfNotEmpty();
+              }
+            }
           }
         }
       }

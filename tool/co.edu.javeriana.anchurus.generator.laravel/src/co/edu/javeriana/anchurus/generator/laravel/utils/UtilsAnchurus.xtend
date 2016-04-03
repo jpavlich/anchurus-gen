@@ -59,7 +59,6 @@ class UtilsAnchurus {
 			accumulate += "->" + generateReferencedElement(current)
 			current = current.tail
 		}
-		println(accumulate)
 		return accumulate
 	}
 	

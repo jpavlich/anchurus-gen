@@ -19,7 +19,7 @@ class ModelsTemplate extends SimpleTemplate<Entity> {
 
 	override def CharSequence template(Entity e) '''
 		<?php
-		namespace App;
+		namespace App\co\edu\javeriana;
 		use Illuminate\Database\Eloquent\Model;	
 		
 		class «e.name» extends Model{

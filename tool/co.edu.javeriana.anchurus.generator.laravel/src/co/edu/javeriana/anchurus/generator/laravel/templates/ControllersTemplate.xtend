@@ -20,13 +20,16 @@ import java.util.Set
 import co.edu.javeriana.isml.isml.NamedElement
 import java.util.LinkedHashSet
 import co.edu.javeriana.isml.isml.Service
+import co.edu.javeriana.isml.isml.ParameterizedType
+import org.eclipse.xtext.naming.IQualifiedNameProvider
 
 class ControllersTemplate extends SimpleTemplate<Controller> {
 	@Inject extension TypeChecker
 	@Inject extension IsmlModelNavigation
 	@Inject extension UtilsAnchurus	
-	List<TypedElement> imports= new ArrayList<TypedElement>();
-	Set<Entity> entitySubGroup= new LinkedHashSet<Entity>();
+	@Inject extension IQualifiedNameProvider
+	List<TypedElement> imports= new ArrayList<TypedElement>
+	Set<Entity> entitySubGroup= new LinkedHashSet<Entity>
 	Set<Service> controllerSG = new LinkedHashSet<Service>
 	override preprocess(Controller c) {
 		val descendants = c.eAllContents.filter(TypedElement).toList
@@ -55,7 +58,7 @@ class ControllersTemplate extends SimpleTemplate<Controller> {
 		use App\Http\Requests;
 		use App\Http\Controllers\Controller;
 		«FOR elm: entitySubGroup»
-		use App\«elm.name»;
+		use App\co\edu\javeriana\«elm.name»;
 		«ENDFOR»
 		«FOR elm: controllerSG»
 		use App\Http\Controllers\«elm.name»;
@@ -64,7 +67,15 @@ class ControllersTemplate extends SimpleTemplate<Controller> {
 			«FOR attr: c.body.filter(Attribute)»
 				«generateAttributes(attr)»
 			«ENDFOR»
-			
+			public function __construct(){
+				«FOR attr: c.body.filter(Attribute)»
+					«IF attr.type.typeSpecification.name.equalsIgnoreCase("persistence")»
+						$this->«attr.name» = new «attr.type.typeSpecification.name»('App\«(attr.type.cast(ParameterizedType).typeParameters.get(0).typeSpecification.fullyQualifiedName.toString("\\"))»');
+					«ELSE»
+						$this->«attr.name» = new «attr.type.typeSpecification.name»;
+					«ENDIF»
+				«ENDFOR»
+			}
 			«FOR func: c.actions»
 				«generateFunction(func)»
 			«ENDFOR»
@@ -72,7 +83,7 @@ class ControllersTemplate extends SimpleTemplate<Controller> {
 	'''
 	
 	def generateAttributes(Attribute attribute)'''
-		private $«attribute.name» = new «attribute.type.typeSpecification.name»;
+		private $«attribute.name»;
 	''' 
 	
 	def CharSequence generateFunction(Action action)'''
