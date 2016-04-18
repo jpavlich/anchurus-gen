@@ -12,6 +12,10 @@ import co.edu.javeriana.isml.scoping.IsmlModelNavigation
 import co.edu.javeriana.isml.validation.TypeChecker
 import com.google.inject.Inject
 import org.eclipse.emf.common.util.EList
+import co.edu.javeriana.isml.isml.Controller
+import co.edu.javeriana.isml.isml.Action
+import co.edu.javeriana.isml.isml.ActionCall
+import co.edu.javeriana.isml.isml.VariableReference
 
 class PagesTemplate extends SimpleTemplate<Page> {
 	@Inject extension TypeChecker
@@ -70,24 +74,24 @@ class PagesTemplate extends SimpleTemplate<Page> {
 	'''
 	
 	def getId(ViewInstance parte){
-		if(parte.name!=null){
-			return parte.name
-		}
-		else{
+		if(parte.view.name.equals("Text"))
+			return parte.parameters.get(1).cast(VariableReference).tail.referencedElement.name
+		else
 			return parte.view.name.toFirstLower + i++
-		}
+		
 	}
 	
 	def CharSequence inputText(ViewInstance parte) '''
 		«IF parte.rows <= 1»
-		<label>«parte.parameters.get(0).valueTemplate»</label>{!!Form::text('«parte.id»', '' ,array('size' => '«parte.parameters.get(2).valueTemplate»')) !!}
+		<label>«parte.parameters.get(0).valueTemplate»</label>{!!Form::text('«parte.id»', «parte.parameters.get(1).valueTemplate» ,array('size' => '«parte.parameters.get(2).valueTemplate»')) !!}
 		«ELSE»
 		«ENDIF»
 	'''
 	
 	def CharSequence button(ViewInstance parte) '''
-		{!! Form::submit ('«parte.parameters.get(0).valueTemplate»') !!}
+		<input type="submit" value="«parte.parameters.get(0).valueTemplate»" onclick = 'this.form.action="«namedUrlForActionCall(parte.actionCall)»";'>
 	'''
+	
 	
 	def CharSequence form(ViewInstance parte) '''
 		{!! Form::open(array('url' => ' ')) !!}
@@ -138,7 +142,6 @@ class PagesTemplate extends SimpleTemplate<Page> {
 	'''
 	
 	def dispatch CharSequence plantillaParte(Reference rtable)'''
-	'''
-		
+	'''	
 
 }

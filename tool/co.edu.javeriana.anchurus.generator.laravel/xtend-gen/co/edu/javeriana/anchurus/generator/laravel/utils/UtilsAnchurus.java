@@ -1,8 +1,11 @@
 package co.edu.javeriana.anchurus.generator.laravel.utils;
 
+import co.edu.javeriana.isml.isml.Action;
+import co.edu.javeriana.isml.isml.ActionCall;
 import co.edu.javeriana.isml.isml.Attribute;
 import co.edu.javeriana.isml.isml.BoolValue;
 import co.edu.javeriana.isml.isml.Controller;
+import co.edu.javeriana.isml.isml.Entity;
 import co.edu.javeriana.isml.isml.Expression;
 import co.edu.javeriana.isml.isml.FloatValue;
 import co.edu.javeriana.isml.isml.IntValue;
@@ -27,6 +30,7 @@ import com.google.common.base.Objects;
 import com.google.inject.Inject;
 import java.util.Calendar;
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtend2.lib.StringConcatenation;
 import org.eclipse.xtext.xbase.lib.ExclusiveRange;
 import org.eclipse.xtext.xbase.lib.Extension;
@@ -85,9 +89,12 @@ public class UtilsAnchurus {
       if (e instanceof StringValue) {
         _matched=true;
         StringConcatenation _builder = new StringConcatenation();
+        _builder.append(" ");
+        _builder.append("\'");
         Object _literal = ((StringValue)e).getLiteral();
         String _string = _literal.toString();
-        _builder.append(_string, "");
+        _builder.append(_string, " ");
+        _builder.append("\' ");
         _switchResult = _builder;
       }
     }
@@ -154,16 +161,38 @@ public class UtilsAnchurus {
   }
   
   public CharSequence generateTailedElement(final VariableReference vr) {
+    StringConcatenation _builder = new StringConcatenation();
+    String accumulate = _builder.toString();
+    boolean _or = false;
+    VariableTypeElement _referencedElement = vr.getReferencedElement();
+    if ((_referencedElement instanceof Attribute)) {
+      _or = true;
+    } else {
+      VariableTypeElement _referencedElement_1 = vr.getReferencedElement();
+      _or = (_referencedElement_1 instanceof Method);
+    }
+    if (_or) {
+      String _accumulate = accumulate;
+      StringConcatenation _builder_1 = new StringConcatenation();
+      _builder_1.append("$this->");
+      accumulate = (_accumulate + _builder_1);
+    } else {
+      String _accumulate_1 = accumulate;
+      StringConcatenation _builder_2 = new StringConcatenation();
+      _builder_2.append("$");
+      accumulate = (_accumulate_1 + _builder_2);
+    }
     CharSequence _generateReferencedElement = this.generateReferencedElement(vr);
     String str = _generateReferencedElement.toString();
-    String accumulate = str;
+    String _accumulate_2 = accumulate;
+    accumulate = (_accumulate_2 + str);
     Reference<? extends NamedElement> current = vr.getTail();
     while ((!Objects.equal(current, null))) {
       {
-        String _accumulate = accumulate;
+        String _accumulate_3 = accumulate;
         CharSequence _generateReferencedElement_1 = this.generateReferencedElement(current);
         String _plus = ("->" + _generateReferencedElement_1);
-        accumulate = (_accumulate + _plus);
+        accumulate = (_accumulate_3 + _plus);
         Reference<? extends NamedElement> _tail = current.getTail();
         current = _tail;
       }
@@ -171,6 +200,11 @@ public class UtilsAnchurus {
     return accumulate;
   }
   
+  /**
+   * brief explanation about what does this method
+   * @param reference the reference...
+   * @return referenced element converted to a formatted string
+   */
   public CharSequence generateReferencedElement(final Reference reference) {
     CharSequence _switchResult = null;
     NamedElement _referencedElement = reference.getReferencedElement();
@@ -179,7 +213,6 @@ public class UtilsAnchurus {
       if (_referencedElement instanceof Attribute) {
         _matched=true;
         StringConcatenation _builder = new StringConcatenation();
-        _builder.append("$this->");
         NamedElement _referencedElement_1 = reference.getReferencedElement();
         String _name = _referencedElement_1.getName();
         _builder.append(_name, "");
@@ -190,7 +223,6 @@ public class UtilsAnchurus {
       if (_referencedElement instanceof Variable) {
         _matched=true;
         StringConcatenation _builder = new StringConcatenation();
-        _builder.append("$");
         NamedElement _referencedElement_1 = reference.getReferencedElement();
         String _name = _referencedElement_1.getName();
         _builder.append(_name, "");
@@ -201,7 +233,6 @@ public class UtilsAnchurus {
       if (_referencedElement instanceof Parameter) {
         _matched=true;
         StringConcatenation _builder = new StringConcatenation();
-        _builder.append("$");
         NamedElement _referencedElement_1 = reference.getReferencedElement();
         String _name = _referencedElement_1.getName();
         _builder.append(_name, "");
@@ -302,5 +333,69 @@ public class UtilsAnchurus {
     String _cadena = cadena;
     cadena = (_cadena + guia);
     return cadena;
+  }
+  
+  public String namedUrlForActionCall(final ActionCall ac) {
+    Action _action = this._ismlModelNavigation.getAction(ac);
+    EObject _eContainer = _action.eContainer();
+    Controller _cast = this._ismlModelNavigation.<EObject, Controller>cast(_eContainer, Controller.class);
+    String _namedUrlForController = this.namedUrlForController(_cast);
+    String _plus = ("/" + _namedUrlForController);
+    String _plus_1 = (_plus + "/");
+    Action _action_1 = this._ismlModelNavigation.getAction(ac);
+    String _name = _action_1.getName();
+    String _kebabCase = this.toKebabCase(_name);
+    String _plus_2 = (_plus_1 + _kebabCase);
+    String _plus_3 = (_plus_2 + "/");
+    CharSequence _generateParametersActionCall = this.generateParametersActionCall(ac);
+    return (_plus_3 + _generateParametersActionCall);
+  }
+  
+  public CharSequence generateParametersActionCall(final ActionCall call) {
+    StringConcatenation _builder = new StringConcatenation();
+    String generatedParameters = _builder.toString();
+    EList<Expression> _parameters = call.getParameters();
+    int _size = _parameters.size();
+    boolean _greaterThan = (_size > 0);
+    if (_greaterThan) {
+      StringConcatenation _builder_1 = new StringConcatenation();
+      {
+        EList<Expression> _parameters_1 = call.getParameters();
+        for(final Expression param : _parameters_1) {
+          _builder_1.append("{{");
+          CharSequence _valueTemplateForEntities = this.valueTemplateForEntities(param);
+          _builder_1.append(_valueTemplateForEntities, "");
+          _builder_1.append("}}");
+        }
+      }
+      generatedParameters = _builder_1.toString();
+    }
+    return generatedParameters;
+  }
+  
+  public CharSequence valueTemplateForEntities(final Expression e) {
+    if ((e instanceof VariableReference)) {
+      VariableTypeElement _referencedElement = ((VariableReference)e).getReferencedElement();
+      Type _type = _referencedElement.getType();
+      TypeSpecification _typeSpecification = this._ismlModelNavigation.getTypeSpecification(_type);
+      if ((_typeSpecification instanceof Entity)) {
+        StringConcatenation _builder = new StringConcatenation();
+        {
+          boolean _hasTail = this.hasTail(((Reference)e));
+          if (_hasTail) {
+            CharSequence _generateTailedElement = this.generateTailedElement(((VariableReference)e));
+            _builder.append(_generateTailedElement, "");
+          } else {
+            _builder.append("$");
+            VariableTypeElement _referencedElement_1 = ((VariableReference)e).getReferencedElement();
+            String _name = _referencedElement_1.getName();
+            _builder.append(_name, "");
+          }
+        }
+        _builder.append("->id");
+        return _builder;
+      }
+    }
+    return this.valueTemplate(e);
   }
 }

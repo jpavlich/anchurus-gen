@@ -22,6 +22,7 @@ import java.util.LinkedHashSet
 import co.edu.javeriana.isml.isml.Service
 import co.edu.javeriana.isml.isml.ParameterizedType
 import org.eclipse.xtext.naming.IQualifiedNameProvider
+import co.edu.javeriana.isml.isml.Parameter
 
 class ControllersTemplate extends SimpleTemplate<Controller> {
 	@Inject extension TypeChecker
@@ -31,6 +32,7 @@ class ControllersTemplate extends SimpleTemplate<Controller> {
 	List<TypedElement> imports= new ArrayList<TypedElement>
 	Set<Entity> entitySubGroup= new LinkedHashSet<Entity>
 	Set<Service> controllerSG = new LinkedHashSet<Service>
+	
 	override preprocess(Controller c) {
 		val descendants = c.eAllContents.filter(TypedElement).toList
 		imports.addAll(descendants) 
@@ -87,10 +89,22 @@ class ControllersTemplate extends SimpleTemplate<Controller> {
 	''' 
 	
 	def CharSequence generateFunction(Action action)'''
-		public function «action.name»(«getParameters(action)»){
+		public function «action.name»(Request $req «IF action.parameters.size >0», «getParameters(action)»«ENDIF»){
+			«IF action.parameters.size !=0»
+			«FOR param: action.parameters»
+			$«param.name» = NULL;
+			«ENDFOR»
+			«FOR param: action.parameters»
+			if(is_numeric($«param.name»_id)){
+				$«param.name» = «param.type.typeSpecification.name»::find($«param.name»_id);
+				$«param.name»->update($req->all());
+			}
+			«ENDFOR»
+			«ENDIF»
 			«FOR sentence: action.body»
 				«generateBody(sentence)»
 			«ENDFOR»
+			
 		}
 	'''
 	
@@ -110,9 +124,16 @@ class ControllersTemplate extends SimpleTemplate<Controller> {
 	}
 	
 	
-	def CharSequence getParameters(Action action) '''«IF action.parameters !=0»«FOR param: action.parameters SEPARATOR ','»$«param.name»«ENDFOR»«ELSE»«ENDIF»'''
+	def CharSequence getParameters(Action action) '''«IF action.parameters.size !=0»«FOR param: action.parameters SEPARATOR ','»«generateParams(param)»«ENDFOR»«ELSE»«ENDIF»'''
 	
-	
+	def CharSequence generateParams(Parameter p){
+		if(p.type.typeSpecification instanceof Entity){
+			return '''$«p.name»_id'''
+		}
+		else{
+			return '''$«p.name»'''
+		}
+	}
 	
 
 }

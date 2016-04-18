@@ -11,7 +11,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('dietas')->insert([
+        DB::table('dieta')->insert([
            'desayuno' => 'huevos con patacón',
            'almuerzo' => 'bandeja paisa',
            'cena' => 'sopa de arroz',
@@ -20,7 +20,7 @@ class DatabaseSeeder extends Seeder
 
        ]);
 
-	DB::table('dietas')->insert([
+	DB::table('dieta')->insert([
            'desayuno' => 'chocolate con pan',
            'almuerzo' => 'lentejas',
            'cena' => 'ensalada',
@@ -29,7 +29,7 @@ class DatabaseSeeder extends Seeder
 
        ]);
 	
-	DB::table('dietas')->insert([
+	DB::table('dieta')->insert([
            'desayuno' => 'caldo de pescado',
            'almuerzo' => 'garbanzos',
            'cena' => 'salchipapa',
@@ -38,7 +38,7 @@ class DatabaseSeeder extends Seeder
 
        ]);
 
-	DB::table('dietas')->insert([
+	DB::table('dieta')->insert([
            'desayuno' => 'carne asada',
            'almuerzo' => 'frijoles',
            'cena' => 'pizza',

@@ -22,6 +22,8 @@ import com.google.common.base.CaseFormat
 import com.google.inject.Inject
 import java.util.Calendar
 import co.edu.javeriana.isml.isml.Method
+import co.edu.javeriana.isml.isml.ActionCall
+import co.edu.javeriana.isml.isml.Entity
 
 class UtilsAnchurus {
 	@Inject extension IsmlModelNavigation
@@ -32,6 +34,7 @@ class UtilsAnchurus {
 	def toKebabCase(String string){
 		CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_HYPHEN, string)
 	}
+	
 	def fecha(){
 		return Calendar.getInstance()
 	}
@@ -42,7 +45,7 @@ class UtilsAnchurus {
 			FloatValue: e.literal.toString
 			IntValue: e.literal.toString
 			NullValue: '''NULL'''
-			StringValue:'''«e.literal.toString»'''
+			StringValue:''' '«e.literal.toString»' '''
 			MethodCall: '''call'''
 			VariableReference: '''«IF hasTail(e)»«generateTailedElement(e)»«ELSE»$«e.referencedElement.name»«ENDIF»'''
 			ViewInstance: '''return view('co.edu.javeriana.«toSnakeCase(e.type.typeSpecification.name)»', «generateArray(e)») '''
@@ -52,8 +55,16 @@ class UtilsAnchurus {
 	}
 	
 	def CharSequence generateTailedElement(VariableReference vr) {
+		var accumulate= ''''''
+		if(vr.referencedElement instanceof Attribute || vr.referencedElement instanceof Method){
+			accumulate+='''$this->'''
+			
+		}
+		else{
+			accumulate+='''$'''
+		}
 		var str= generateReferencedElement(vr).toString
-		var accumulate = str
+		accumulate += str
 		var current = vr.tail
 		while(current!=null){
 			accumulate += "->" + generateReferencedElement(current)
@@ -62,11 +73,16 @@ class UtilsAnchurus {
 		return accumulate
 	}
 	
+	/** 
+	 * brief explanation about what does this method
+	 * @param reference the reference...
+	 * @return referenced element converted to a formatted string
+	 */
 	def CharSequence generateReferencedElement(Reference reference) {
 		switch reference.referencedElement{
-			Attribute:'''$this->«reference.referencedElement.name»''' 
-			Variable:'''$«reference.referencedElement.name»'''
-			Parameter:'''$«reference.referencedElement.name»'''
+			Attribute:'''«reference.referencedElement.name»''' 
+			Variable:'''«reference.referencedElement.name»'''
+			Parameter:'''«reference.referencedElement.name»'''
 			Method:'''«reference.referencedElement.name»(«getParameters(reference as ParameterizedReference)»)'''
 			default: reference.toString 
 		}
@@ -98,4 +114,24 @@ class UtilsAnchurus {
 		cadena+=guia
 		return cadena
 	} 
+	def String namedUrlForActionCall(ActionCall ac){
+		"/"+namedUrlForController(ac.action.eContainer.cast(Controller))+"/"+toKebabCase(ac.action.name)+"/"+generateParametersActionCall(ac);
+	}
+	
+	def CharSequence generateParametersActionCall(ActionCall call) {
+		var generatedParameters= ''''''
+		if(call.parameters.size>0){
+			generatedParameters='''«FOR param: call.parameters»{{«valueTemplateForEntities(param)»}}«ENDFOR»'''
+		}
+		return generatedParameters
+	}
+	
+	def CharSequence valueTemplateForEntities(Expression e){
+		if(e instanceof VariableReference){
+			if(e.referencedElement.type.typeSpecification instanceof Entity){
+				return '''«IF hasTail(e)»«generateTailedElement(e)»«ELSE»$«e.referencedElement.name»«ENDIF»->id'''
+			}
+		}
+		return valueTemplate(e)
+	}
 }

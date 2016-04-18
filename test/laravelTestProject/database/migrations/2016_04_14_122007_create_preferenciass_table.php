@@ -2,10 +2,10 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePreferenciasTable extends Migration{
+class CreatePreferenciassTable extends Migration{
 	
 	public function up(){
-		Schema::create('preferencias', function(Blueprint $table){
+		Schema::create('preferenciass', function(Blueprint $table){
 			$table->increments('id');
 			$table->string('preferencia')->default('');
 			$table->timestamps();
@@ -15,7 +15,7 @@ class CreatePreferenciasTable extends Migration{
 	
 	public function down(){
 		DB::statement('SET FOREIGN_KEY_CHECKS = 0');
-		Schema::drop('preferencias');
+		Schema::drop('preferenciass');
 		DB::statement('SET FOREIGN_KEY_CHECKS = 1');
 	}
 	

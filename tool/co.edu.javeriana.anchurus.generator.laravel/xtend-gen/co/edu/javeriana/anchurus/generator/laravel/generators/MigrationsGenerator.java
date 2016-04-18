@@ -93,7 +93,7 @@ public class MigrationsGenerator extends SimpleGenerator<Entity> {
     String _name = e.getName();
     String _snakeCase = this._utilsAnchurus.toSnakeCase(_name);
     String _plus_14 = (_plus_13 + _snakeCase);
-    String _plus_15 = (_plus_14 + "_table");
+    String _plus_15 = (_plus_14 + "s_table");
     return (_plus_15 + ".php");
   }
 }

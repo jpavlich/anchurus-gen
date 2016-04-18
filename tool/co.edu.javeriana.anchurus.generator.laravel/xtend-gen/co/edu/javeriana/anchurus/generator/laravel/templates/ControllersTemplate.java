@@ -19,7 +19,6 @@ import co.edu.javeriana.isml.isml.TypedElement;
 import co.edu.javeriana.isml.isml.ViewInstance;
 import co.edu.javeriana.isml.scoping.IsmlModelNavigation;
 import co.edu.javeriana.isml.validation.TypeChecker;
-import com.google.common.base.Objects;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Iterators;
 import com.google.inject.Inject;
@@ -219,11 +218,73 @@ public class ControllersTemplate extends SimpleTemplate<Controller> {
     _builder.append("public function ");
     String _name = action.getName();
     _builder.append(_name, "");
-    _builder.append("(");
-    CharSequence _parameters = this.getParameters(action);
-    _builder.append(_parameters, "");
+    _builder.append("(Request $req ");
+    {
+      EList<Parameter> _parameters = action.getParameters();
+      int _size = _parameters.size();
+      boolean _greaterThan = (_size > 0);
+      if (_greaterThan) {
+        _builder.append(", ");
+        CharSequence _parameters_1 = this.getParameters(action);
+        _builder.append(_parameters_1, "");
+      }
+    }
     _builder.append("){");
     _builder.newLineIfNotEmpty();
+    {
+      EList<Parameter> _parameters_2 = action.getParameters();
+      int _size_1 = _parameters_2.size();
+      boolean _notEquals = (_size_1 != 0);
+      if (_notEquals) {
+        {
+          EList<Parameter> _parameters_3 = action.getParameters();
+          for(final Parameter param : _parameters_3) {
+            _builder.append("\t");
+            _builder.append("$");
+            String _name_1 = param.getName();
+            _builder.append(_name_1, "\t");
+            _builder.append(" = NULL;");
+            _builder.newLineIfNotEmpty();
+          }
+        }
+        {
+          EList<Parameter> _parameters_4 = action.getParameters();
+          for(final Parameter param_1 : _parameters_4) {
+            _builder.append("\t");
+            _builder.append("if(is_numeric($");
+            String _name_2 = param_1.getName();
+            _builder.append(_name_2, "\t");
+            _builder.append("_id)){");
+            _builder.newLineIfNotEmpty();
+            _builder.append("\t");
+            _builder.append("\t");
+            _builder.append("$");
+            String _name_3 = param_1.getName();
+            _builder.append(_name_3, "\t\t");
+            _builder.append(" = ");
+            Type _type = param_1.getType();
+            TypeSpecification _typeSpecification = this._ismlModelNavigation.getTypeSpecification(_type);
+            String _name_4 = _typeSpecification.getName();
+            _builder.append(_name_4, "\t\t");
+            _builder.append("::find($");
+            String _name_5 = param_1.getName();
+            _builder.append(_name_5, "\t\t");
+            _builder.append("_id);");
+            _builder.newLineIfNotEmpty();
+            _builder.append("\t");
+            _builder.append("\t");
+            _builder.append("$");
+            String _name_6 = param_1.getName();
+            _builder.append(_name_6, "\t\t");
+            _builder.append("->update($req->all());");
+            _builder.newLineIfNotEmpty();
+            _builder.append("\t");
+            _builder.append("}");
+            _builder.newLine();
+          }
+        }
+      }
+    }
     {
       EList<MethodStatement> _body = action.getBody();
       for(final MethodStatement sentence : _body) {
@@ -233,6 +294,8 @@ public class ControllersTemplate extends SimpleTemplate<Controller> {
         _builder.newLineIfNotEmpty();
       }
     }
+    _builder.append("\t");
+    _builder.newLine();
     _builder.append("}");
     _builder.newLine();
     return _builder;
@@ -286,7 +349,8 @@ public class ControllersTemplate extends SimpleTemplate<Controller> {
     StringConcatenation _builder = new StringConcatenation();
     {
       EList<Parameter> _parameters = action.getParameters();
-      boolean _notEquals = (!Objects.equal(_parameters, Integer.valueOf(0)));
+      int _size = _parameters.size();
+      boolean _notEquals = (_size != 0);
       if (_notEquals) {
         {
           EList<Parameter> _parameters_1 = action.getParameters();
@@ -297,14 +361,32 @@ public class ControllersTemplate extends SimpleTemplate<Controller> {
             } else {
               _builder.appendImmediate(",", "");
             }
-            _builder.append("$");
-            String _name = param.getName();
-            _builder.append(_name, "");
+            CharSequence _generateParams = this.generateParams(param);
+            _builder.append(_generateParams, "");
           }
         }
       } else {
       }
     }
     return _builder;
+  }
+  
+  public CharSequence generateParams(final Parameter p) {
+    Type _type = p.getType();
+    TypeSpecification _typeSpecification = this._ismlModelNavigation.getTypeSpecification(_type);
+    if ((_typeSpecification instanceof Entity)) {
+      StringConcatenation _builder = new StringConcatenation();
+      _builder.append("$");
+      String _name = p.getName();
+      _builder.append(_name, "");
+      _builder.append("_id");
+      return _builder;
+    } else {
+      StringConcatenation _builder_1 = new StringConcatenation();
+      _builder_1.append("$");
+      String _name_1 = p.getName();
+      _builder_1.append(_name_1, "");
+      return _builder_1;
+    }
   }
 }

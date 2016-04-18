@@ -44,7 +44,7 @@ class MigrationsGenerator extends SimpleGenerator<Entity> {
 		if(minute<10) {strmin = "0"+minute} else {strmin = minute+""}
 		if(second<10) {strsec = "0"+second} else {strsec = second+""}		
 		
-		return fecha.get(Calendar.YEAR)+"_"+ strmon+ "_"+ strday +"_"+ strhr+ strmin+ strsec+ "_create_" +  e.name.toSnakeCase + "_table"  +".php"	
+		return fecha.get(Calendar.YEAR)+"_"+ strmon+ "_"+ strday +"_"+ strhr+ strmin+ strsec+ "_create_" +  e.name.toSnakeCase + "s_table"  +".php"	
 		
 	}
 

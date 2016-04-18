@@ -2,10 +2,10 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateDietaTable extends Migration{
+class CreateDietasTable extends Migration{
 	
 	public function up(){
-		Schema::create('dieta', function(Blueprint $table){
+		Schema::create('dietas', function(Blueprint $table){
 			$table->increments('id');
 			$table->string('desayuno')->default('');
 			$table->string('almuerzo')->default('');
@@ -19,7 +19,7 @@ class CreateDietaTable extends Migration{
 	
 	public function down(){
 		DB::statement('SET FOREIGN_KEY_CHECKS = 0');
-		Schema::drop('dieta');
+		Schema::drop('dietas');
 		DB::statement('SET FOREIGN_KEY_CHECKS = 1');
 	}
 	

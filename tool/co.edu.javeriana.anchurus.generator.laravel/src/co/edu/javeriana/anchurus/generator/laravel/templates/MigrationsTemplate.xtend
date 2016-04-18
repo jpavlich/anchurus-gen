@@ -27,10 +27,10 @@ class MigrationsTemplate extends SimpleTemplate<Entity> {
 	use Illuminate\Database\Schema\Blueprint;
 	use Illuminate\Database\Migrations\Migration;
 	
-	class Create«e.name.toFirstUpper»Table extends Migration{
+	class Create«e.name.toFirstUpper»sTable extends Migration{
 		
 		public function up(){
-			Schema::create('«toSnakeCase(e.name)»', function(Blueprint $table){
+			Schema::create('«toSnakeCase(e.name)»s', function(Blueprint $table){
 				$table->increments('id');
 				«FOR attr: e.body»
 					«generarTipo(attr)»
@@ -42,7 +42,7 @@ class MigrationsTemplate extends SimpleTemplate<Entity> {
 		
 		public function down(){
 			DB::statement('SET FOREIGN_KEY_CHECKS = 0');
-			Schema::drop('«toSnakeCase(e.name)»');
+			Schema::drop('«toSnakeCase(e.name)»s');
 			DB::statement('SET FOREIGN_KEY_CHECKS = 1');
 		}
 		
