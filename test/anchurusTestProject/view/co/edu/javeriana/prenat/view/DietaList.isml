@@ -7,7 +7,7 @@ page DietaList(Collection<Dieta> dietas) controlledBy DietaManager  {
 	       	
 	           DataTable("Collection<Dieta>", null) {
 	               header : {                    
-	                   Label($desayuno);
+	                   Label("Desayuno");
 	                   Label("Almuerzo");
 	                   Label("Cena");
 	                   Label("Merienda");

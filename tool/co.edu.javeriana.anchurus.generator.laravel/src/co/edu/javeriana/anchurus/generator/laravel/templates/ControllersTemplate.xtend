@@ -3,26 +3,38 @@
 import co.edu.javeriana.anchurus.generator.laravel.utils.UtilsAnchurus
 import co.edu.javeriana.isml.generator.common.SimpleTemplate
 import co.edu.javeriana.isml.isml.Action
+import co.edu.javeriana.isml.isml.ActionCall
+import co.edu.javeriana.isml.isml.Assignment
 import co.edu.javeriana.isml.isml.Attribute
 import co.edu.javeriana.isml.isml.Controller
+import co.edu.javeriana.isml.isml.Entity
 import co.edu.javeriana.isml.isml.Expression
-import co.edu.javeriana.isml.isml.MethodStatement
+import co.edu.javeriana.isml.isml.For
+import co.edu.javeriana.isml.isml.If
+import co.edu.javeriana.isml.isml.MethodCall
+import co.edu.javeriana.isml.isml.NamedElement
+import co.edu.javeriana.isml.isml.Parameter
+import co.edu.javeriana.isml.isml.ParameterizedType
+import co.edu.javeriana.isml.isml.ResourceReference
+import co.edu.javeriana.isml.isml.Return
+import co.edu.javeriana.isml.isml.Service
 import co.edu.javeriana.isml.isml.Show
+import co.edu.javeriana.isml.isml.Type
+import co.edu.javeriana.isml.isml.TypedElement
+import co.edu.javeriana.isml.isml.Variable
+import co.edu.javeriana.isml.isml.VariableReference
 import co.edu.javeriana.isml.isml.ViewInstance
+import co.edu.javeriana.isml.isml.While
 import co.edu.javeriana.isml.scoping.IsmlModelNavigation
 import co.edu.javeriana.isml.validation.TypeChecker
 import com.google.inject.Inject
 import java.util.ArrayList
-import java.util.List
-import co.edu.javeriana.isml.isml.Entity
-import co.edu.javeriana.isml.isml.TypedElement
-import java.util.Set
-import co.edu.javeriana.isml.isml.NamedElement
 import java.util.LinkedHashSet
-import co.edu.javeriana.isml.isml.Service
-import co.edu.javeriana.isml.isml.ParameterizedType
+import java.util.List
+import java.util.Set
 import org.eclipse.xtext.naming.IQualifiedNameProvider
-import co.edu.javeriana.isml.isml.Parameter
+import co.edu.javeriana.isml.isml.MethodStatement
+import org.eclipse.emf.common.util.EList
 
 class ControllersTemplate extends SimpleTemplate<Controller> {
 	@Inject extension TypeChecker
@@ -101,28 +113,71 @@ class ControllersTemplate extends SimpleTemplate<Controller> {
 			}
 			«ENDFOR»
 			«ENDIF»
-			«FOR sentence: action.body»
-				«generateBody(sentence)»
-			«ENDFOR»
-			
+			«generateBody(action.body)»
 		}
 	'''
 	
-	def CharSequence generateBody(MethodStatement statement) {
-		switch(statement){
-			Show: getPage(statement.expression)
-			default: ''''''
+	def CharSequence generateBody(List<MethodStatement> lms)'''
+		«FOR sentence: lms»«IF sentence instanceof If || sentence instanceof For»«generateMethodStatement(sentence)»«ELSE»«generateMethodStatement(sentence)»;«ENDIF»«ENDFOR»
+	'''
+	
+	def dispatch CharSequence generateMethodStatement(If ifst)'''
+		if(«ifst.condition.valueTemplate»){
+			«generateBody(ifst.body)»
 		}
+		«IF ifst.elseBody?.size>0»
+		else{
+			«ifst.elseBody.generateBody»
+		}
+		«ENDIF»
+	'''
+
+	
+	def dispatch CharSequence generateMethodStatement(Assignment assign){
+		return ''''''
 	}
 	
-	def CharSequence getPage(Expression expression) {
+	def dispatch CharSequence generateMethodStatement(Return returnst){
+		return ''''''
+	}
+	
+	def dispatch CharSequence generateMethodStatement(For forst)'''
+		foreach(«forst.collection.valueTemplate» as &«forst.variable.generateMethodStatement»){
+			«generateBody(forst.body)»
+		}
+	'''
+	
+	def dispatch CharSequence generateMethodStatement(While whilest){
+		return ''''''
+	}
+	
+	def dispatch CharSequence generateMethodStatement(ActionCall acst)'''$this->«acst.action.name»($req«IF acst.action.parameters.size !=0», «getParameters(acst.action)»«ENDIF»)'''
+	
+	
+	def dispatch CharSequence generateMethodStatement(MethodCall mcst){
+		return ''''''
+	}
+	
+	def dispatch CharSequence generateMethodStatement(ResourceReference resref){
+		return ''''''
+	}
+	
+	def dispatch CharSequence generateMethodStatement(Type type){
+		return ''''''
+	}
+	def dispatch CharSequence generateMethodStatement(VariableReference vr)'''
+		«vr.valueTemplate»'''
+	def dispatch CharSequence generateMethodStatement(Variable variable)'''
+		$«variable.name»
+	'''
+	
+	def dispatch generateMethodStatement(Show show){
+		val expression = show.expression
 		switch(expression){
-			ViewInstance:'''return view('co.edu.javeriana.«toSnakeCase(expression.type.typeSpecification.name)»', «generateArray(expression)»); '''
+			ViewInstance:'''return view('co.edu.javeriana.«toSnakeCase(expression.type.typeSpecification.name)»', «generateArray(expression)»)'''
 			default:''''''
 		}
-		
 	}
-	
 	
 	def CharSequence getParameters(Action action) '''«IF action.parameters.size !=0»«FOR param: action.parameters SEPARATOR ','»«generateParams(param)»«ENDFOR»«ELSE»«ENDIF»'''
 	

@@ -16,6 +16,7 @@ import co.edu.javeriana.isml.isml.Controller
 import co.edu.javeriana.isml.isml.Action
 import co.edu.javeriana.isml.isml.ActionCall
 import co.edu.javeriana.isml.isml.VariableReference
+import co.edu.javeriana.isml.isml.NamedViewBlock
 
 class PagesTemplate extends SimpleTemplate<Page> {
 	@Inject extension TypeChecker
@@ -67,7 +68,7 @@ class PagesTemplate extends SimpleTemplate<Page> {
 	
 	def CharSequence label(ViewInstance parte) '''
 		«IF parte.actionCall==null»
-		{!! Form::label ('«parte.id»' ,«parte.parameters.get(0).valueTemplate») !!}
+		<p>{!! Form::label ('«parte.id»' ,«parte.parameters.get(0).valueTemplate») !!}</p>
 		«ELSE»
 		<p>Esto no est&iacute; generado</p>
 		«ENDIF»
@@ -83,7 +84,7 @@ class PagesTemplate extends SimpleTemplate<Page> {
 	
 	def CharSequence inputText(ViewInstance parte) '''
 		«IF parte.rows <= 1»
-		<label>«parte.parameters.get(0).valueTemplate»</label>{!!Form::text('«parte.id»', «parte.parameters.get(1).valueTemplate» ,array('size' => '«parte.parameters.get(2).valueTemplate»')) !!}
+		<p><label>«parte.parameters.get(0).valueTemplate»</label>{!!Form::text('«parte.id»', «parte.parameters.get(1).valueTemplate» ,array('size' => '«parte.parameters.get(2).valueTemplate»')) !!}</p>
 		«ELSE»
 		«ENDIF»
 	'''
@@ -114,7 +115,30 @@ class PagesTemplate extends SimpleTemplate<Page> {
 	'''
 	
 	def CharSequence dataTable(ViewInstance parte) '''
+	<table class="table table-bordered">
+			«parte.tableHeader.generateHead»
+			«parte.tableBody.generateBody»
+	</table>
 	'''
+	
+	def CharSequence generateBody(NamedViewBlock block)'''
+	«templateForLoopTables(block.body.head.cast(ForView))»
+	'''
+	
+	def templateForLoopTables(ForView fv) '''
+	@foreach («fv.collection.valueTemplate» as $«fv.variable.name»)
+	<tr>
+		«FOR cell : fv.body»<td>«cell.plantillaParte»</td>«ENDFOR»
+	</tr>
+	@endforeach
+	'''
+	
+	def CharSequence generateHead(NamedViewBlock block)'''
+	<tr>
+		«FOR part: block.body»<th>«plantillaParte(part)»</th>«ENDFOR»
+	</tr>
+	'''
+	
 	
 	def CharSequence password(ViewInstance parte)'''
 		{!! Form::password('«parte.id»') !!}

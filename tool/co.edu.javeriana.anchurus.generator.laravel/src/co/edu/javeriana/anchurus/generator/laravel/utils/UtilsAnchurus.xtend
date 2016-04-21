@@ -88,7 +88,7 @@ class UtilsAnchurus {
 		}
 	}
 	
-	def CharSequence getParameters(ParameterizedReference<?> reference) '''«IF reference.parameters.size!=0»«FOR param: reference.parameters SEPARATOR ','»$«param.valueTemplate»«ENDFOR»«ENDIF»'''
+	def CharSequence getParameters(ParameterizedReference<?> reference) '''«IF reference.parameters.size!=0»«FOR param: reference.parameters SEPARATOR ','»«param.valueTemplate»«ENDFOR»«ENDIF»'''
 	
 	def boolean hasTail(Reference r){
 		if(r.tail!=null) return true

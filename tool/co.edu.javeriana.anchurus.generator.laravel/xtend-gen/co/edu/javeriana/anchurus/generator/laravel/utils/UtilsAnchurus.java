@@ -275,7 +275,6 @@ public class UtilsAnchurus {
             } else {
               _builder.appendImmediate(",", "");
             }
-            _builder.append("$");
             CharSequence _valueTemplate = this.valueTemplate(param);
             _builder.append(_valueTemplate, "");
           }
