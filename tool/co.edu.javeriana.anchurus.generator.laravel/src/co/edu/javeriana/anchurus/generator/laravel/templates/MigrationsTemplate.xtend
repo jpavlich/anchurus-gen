@@ -20,8 +20,11 @@ class MigrationsTemplate extends SimpleTemplate<Entity> {
 		i= 1;	
 	}
 	
-	
-
+	/**
+	 * This method generates the whole PHP migration archive from a given ISML entity.
+	 * @param e the Eontroller
+	 * @return the migration archive
+	 * */
 	override def CharSequence template(Entity e) '''
 	<?php
 	use Illuminate\Database\Schema\Blueprint;
@@ -33,7 +36,7 @@ class MigrationsTemplate extends SimpleTemplate<Entity> {
 			Schema::create('«toSnakeCase(e.name)»s', function(Blueprint $table){
 				$table->increments('id');
 				«FOR attr: e.body»
-					«generarTipo(attr)»
+					«generateType(attr)»
 				«ENDFOR»
 				$table->timestamps();
 			});
@@ -48,8 +51,12 @@ class MigrationsTemplate extends SimpleTemplate<Entity> {
 		
 	}	
 	'''
-	
-	def CharSequence generarTipo(Attribute attribute) {
+	/**
+	 * This method generates each attribute for the table which will be made in the migration.
+	 * @param attribute each Entity Attribute
+	 * @return statement for generate the attribute in the table
+	 * */
+	def CharSequence generateType(Attribute attribute) {
 		switch(attribute.type.typeSpecification.typeSpecificationString){
 			case "String": '''
 				$table->string('«toSnakeCase(attribute.name)»')->default('');

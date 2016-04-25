@@ -17,6 +17,11 @@ class ModelsTemplate extends SimpleTemplate<Entity> {
 	
 	
 
+	/**
+	 * This method makes the PHP Model archive for a given ISML entity.
+	 * @param e the Entity
+	 * @return the PHP Model archive
+	 * */
 	override def CharSequence template(Entity e) '''
 		<?php
 		namespace App\co\edu\javeriana;

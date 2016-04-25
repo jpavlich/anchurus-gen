@@ -80,7 +80,6 @@ class DietaManagerController extends Controller{
 			$dieta = Dieta::find($dieta_id);
 			$dieta->update($req->all());
 		}
-		$this->persistence->remove($dieta);
-		$this->listAll($req);
+		$this->persistence->remove($dieta);$this->listAll($req);
 	}
 }

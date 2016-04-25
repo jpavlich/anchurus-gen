@@ -60,7 +60,11 @@ class ControllersTemplate extends SimpleTemplate<Controller> {
 	}
 	
 	
-
+	/**
+	 * This method generates the whole PHP Controller archive from a given ISML controller.
+	 * @param c the Controller
+	 * @return the Controller archive
+	 * */
 	override def CharSequence template(Controller c) '''
 		<?php
 		namespace App\Http\Controllers;
@@ -95,11 +99,19 @@ class ControllersTemplate extends SimpleTemplate<Controller> {
 			«ENDFOR»
 		}
 	'''
-	
+	/**
+	 * This method generates an Attribute declaration in PHP.
+	 * @param attribute attribute in ISML
+	 * @return attribute in PHP format
+	 * */
 	def generateAttributes(Attribute attribute)'''
 		private $«attribute.name»;
 	''' 
-	
+	/**
+	 * This method generates the PHP code for a function, from the given ISML action.
+	 * @param action the ISML action
+	 * @return the PHP function
+	 * */
 	def CharSequence generateFunction(Action action)'''
 		public function «action.name»(Request $req «IF action.parameters.size >0», «getParameters(action)»«ENDIF»){
 			«IF action.parameters.size !=0»
@@ -117,10 +129,20 @@ class ControllersTemplate extends SimpleTemplate<Controller> {
 		}
 	'''
 	
+	/**
+	 * This method generates the body of a PHP function, given a ISML MethodStatement list.
+	 * @param lms the ISML action list
+	 * @return PHP function body
+	 * */
 	def CharSequence generateBody(List<MethodStatement> lms)'''
 		«FOR sentence: lms»«IF sentence instanceof If || sentence instanceof For»«generateMethodStatement(sentence)»«ELSE»«generateMethodStatement(sentence)»;«ENDIF»«ENDFOR»
 	'''
 	
+	/**
+	 * This method generates the body of a PHP "if" statement, given a ISML If statement.
+	 * @param ifst the ISML If statement
+	 * @return PHP if statement
+	 * */
 	def dispatch CharSequence generateMethodStatement(If ifst)'''
 		if(«ifst.condition.valueTemplate»){
 			«generateBody(ifst.body)»
@@ -141,6 +163,11 @@ class ControllersTemplate extends SimpleTemplate<Controller> {
 		return ''''''
 	}
 	
+	/**
+	 * This method generates the body of a PHP "for" statement, given a ISML For statement.
+	 * @param forst the ISML For statement
+	 * @return PHP for statement
+	 * */
 	def dispatch CharSequence generateMethodStatement(For forst)'''
 		foreach(«forst.collection.valueTemplate» as &«forst.variable.generateMethodStatement»){
 			«generateBody(forst.body)»
@@ -150,7 +177,11 @@ class ControllersTemplate extends SimpleTemplate<Controller> {
 	def dispatch CharSequence generateMethodStatement(While whilest){
 		return ''''''
 	}
-	
+	/**
+	 * This method generates the body of a PHP method calling, given a ISML ActionCall statement.
+	 * @param acst the ISML ActionCall statement
+	 * @return PHP method calling
+	 * */
 	def dispatch CharSequence generateMethodStatement(ActionCall acst)'''$this->«acst.action.name»($req«IF acst.action.parameters.size !=0», «getParameters(acst.action)»«ENDIF»)'''
 	
 	
@@ -165,12 +196,32 @@ class ControllersTemplate extends SimpleTemplate<Controller> {
 	def dispatch CharSequence generateMethodStatement(Type type){
 		return ''''''
 	}
+	
+	/**
+	 * This method generates the body of a PHP variable reference, given a ISML VariableReference<br> 
+	 * statement.
+	 * @param vr the ISML VariableReference statement
+	 * @return PHP variable reference
+	 * */
 	def dispatch CharSequence generateMethodStatement(VariableReference vr)'''
 		«vr.valueTemplate»'''
+		
+	/**
+	 * This method generates the body of a PHP variable declaration, given a ISML Variable<br> 
+	 * statement.
+	 * @param variable the ISML Variable statement
+	 * @return PHP variable
+	 * */
 	def dispatch CharSequence generateMethodStatement(Variable variable)'''
 		$«variable.name»
 	'''
 	
+	/**
+	 * This method generates a return method for show views in PHP, given a ISML Show<br> 
+	 * statement.
+	 * @param show the ISML Show statement
+	 * @return PHP return method for show
+	 * */
 	def dispatch generateMethodStatement(Show show){
 		val expression = show.expression
 		switch(expression){
@@ -179,8 +230,22 @@ class ControllersTemplate extends SimpleTemplate<Controller> {
 		}
 	}
 	
+	/**
+	 * This method generates formatted parameters for an action, given a ISML Action<br> 
+	 * statement.
+	 * @param action the ISML Action statement
+	 * @return formatted parameters, separated by commas
+	 * */
 	def CharSequence getParameters(Action action) '''«IF action.parameters.size !=0»«FOR param: action.parameters SEPARATOR ','»«generateParams(param)»«ENDFOR»«ELSE»«ENDIF»'''
 	
+	
+	/**
+	 * This method generates format for the parameter given, distinguishing between Entity parameters <br>
+	 * and other parameter types.
+	 *  
+	 * @param action the ISML Action statement
+	 * @return formatted parameters, separated by commas
+	 * */
 	def CharSequence generateParams(Parameter p){
 		if(p.type.typeSpecification instanceof Entity){
 			return '''$«p.name»_id'''
