@@ -14,15 +14,13 @@ class MigrationsTemplate extends SimpleTemplate<Entity> {
 	@Inject extension IsmlModelNavigation	
 	@Inject extension IQualifiedNameProvider
 	@Inject extension UtilsAnchurus
-	int i
 
 	override preprocess(Entity e) {
-		i= 1;	
 	}
 	
 	/**
 	 * This method generates the whole PHP migration archive from a given ISML entity.
-	 * @param e the Eontroller
+	 * @param e the Controller
 	 * @return the migration archive
 	 * */
 	override def CharSequence template(Entity e) '''

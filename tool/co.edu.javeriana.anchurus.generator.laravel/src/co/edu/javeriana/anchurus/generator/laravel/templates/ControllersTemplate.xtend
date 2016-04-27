@@ -139,7 +139,7 @@ class ControllersTemplate extends SimpleTemplate<Controller> {
 	'''
 	
 	/**
-	 * This method generates the body of a PHP "if" statement, given a ISML If statement.
+	 * This method generates the PHP "if" statement, given a ISML If statement.
 	 * @param ifst the ISML If statement
 	 * @return PHP if statement
 	 * */
@@ -154,17 +154,27 @@ class ControllersTemplate extends SimpleTemplate<Controller> {
 		«ENDIF»
 	'''
 
-	
+	/**
+	 * This method must generate the PHP Assignment statement, given the ISML assignment statement.
+	 * @param assign the ISML assignment
+	 * @return the PHP Assignment statement
+	 * */
 	def dispatch CharSequence generateMethodStatement(Assignment assign){
+		// TODO Generate PHP assignment statement
 		return ''''''
 	}
 	
+	/**
+	 * This method must generate the PHP Return statement, given the ISML return statement.
+	 * @param returnst the ISML return
+	 * @return the PHP Return statement
+	 * */
 	def dispatch CharSequence generateMethodStatement(Return returnst){
 		return ''''''
 	}
 	
 	/**
-	 * This method generates the body of a PHP "for" statement, given a ISML For statement.
+	 * This method generates the PHP "for" statement, given a ISML For statement.
 	 * @param forst the ISML For statement
 	 * @return PHP for statement
 	 * */
@@ -174,31 +184,51 @@ class ControllersTemplate extends SimpleTemplate<Controller> {
 		}
 	'''
 	
+	/**
+	 * This method must generate the PHP "while" statement, given a ISML While statement.
+	 * @param whilest the ISML While statement
+	 * @return PHP while statement
+	 * */
 	def dispatch CharSequence generateMethodStatement(While whilest){
 		return ''''''
 	}
 	/**
-	 * This method generates the body of a PHP method calling, given a ISML ActionCall statement.
+	 * This method generates the PHP action calling, given a ISML ActionCall statement.
 	 * @param acst the ISML ActionCall statement
-	 * @return PHP method calling
+	 * @return PHP action calling
 	 * */
 	def dispatch CharSequence generateMethodStatement(ActionCall acst)'''$this->«acst.action.name»($req«IF acst.action.parameters.size !=0», «getParameters(acst.action)»«ENDIF»)'''
 	
-	
+	/**
+	 * This method must generate the PHP method calling, given a ISML MethodCall statement.
+	 * @param mcst the ISML MethodCall statement
+	 * @return PHP for statement
+	 * */
 	def dispatch CharSequence generateMethodStatement(MethodCall mcst){
 		return ''''''
 	}
 	
+	/**
+	 * This method must generate the PHP resource referencing, given a ISML<br> 
+	 * ResourceReference statement.
+	 * @param resref the ISML ResourceReference statement
+	 * @return PHP resource referencing
+	 * */
 	def dispatch CharSequence generateMethodStatement(ResourceReference resref){
 		return ''''''
 	}
 	
+	/**
+	 * This method must generate the PHP type, given a ISML Type statement.
+	 * @param type the ISML Type statement
+	 * @return PHP type statement
+	 * */
 	def dispatch CharSequence generateMethodStatement(Type type){
 		return ''''''
 	}
 	
 	/**
-	 * This method generates the body of a PHP variable reference, given a ISML VariableReference<br> 
+	 * This method generates the PHP variable reference, given a ISML VariableReference<br> 
 	 * statement.
 	 * @param vr the ISML VariableReference statement
 	 * @return PHP variable reference
@@ -207,7 +237,7 @@ class ControllersTemplate extends SimpleTemplate<Controller> {
 		«vr.valueTemplate»'''
 		
 	/**
-	 * This method generates the body of a PHP variable declaration, given a ISML Variable<br> 
+	 * This method generates the PHP variable declaration, given a ISML Variable<br> 
 	 * statement.
 	 * @param variable the ISML Variable statement
 	 * @return PHP variable

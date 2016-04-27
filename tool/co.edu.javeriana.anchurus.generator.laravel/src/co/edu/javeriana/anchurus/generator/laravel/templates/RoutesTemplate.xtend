@@ -23,6 +23,13 @@ class RoutesTemplate extends SimpleTemplate<List<Controller>> {
 	
 	List<TypedElement> imports= new ArrayList<TypedElement>();
 	Set<Entity> entitySubGroup= new LinkedHashSet<Entity>();
+
+	/**
+	 * This method fills the List&ltTypedElement> imports (where are the typed elements to<br>
+	 * go in the routes) and the Set&ltEntity> entitySubGroup (where are the referenced entities<br>
+	 * in the routes).
+	 * @param lc Controller list to make the Routes archive
+	 * */
 	override preprocess(List<Controller> lc){
 		for(ctrl: lc){
 			var descendants= ctrl.eAllContents.filter(TypedElement).toList
@@ -34,6 +41,11 @@ class RoutesTemplate extends SimpleTemplate<List<Controller>> {
 		}
 	}
 	
+	/**
+	 * This method makes the PHP Routes archive for a given list of ISML controllers.
+	 * @param e the controller list
+	 * @return the PHP Routes archive
+	 * */
 	override protected  template(List<Controller> e) '''
 	<?php
 	Route::get('/', function () {
@@ -47,7 +59,11 @@ class RoutesTemplate extends SimpleTemplate<List<Controller>> {
 		«ENDIF»
 	«ENDFOR»
 	'''
-	
+	/**
+	 * This method formats a parameter list from an Action for put them in the action's relative URL.
+	 * @param action a Controller Action
+	 * @return formatted string for the parameters
+	 * */
 	def CharSequence generateParameters(Action action) {
 		var CharSequence cs= ''''''
 		if(action.parameters.size>0){

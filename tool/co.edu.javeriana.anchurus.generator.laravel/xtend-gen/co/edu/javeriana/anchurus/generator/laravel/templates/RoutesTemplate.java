@@ -45,6 +45,12 @@ public class RoutesTemplate extends SimpleTemplate<List<Controller>> {
   
   private Set<Entity> entitySubGroup = new LinkedHashSet<Entity>();
   
+  /**
+   * This method fills the List&ltTypedElement> imports (where are the typed elements to<br>
+   * go in the routes) and the Set&ltEntity> entitySubGroup (where are the referenced entities<br>
+   * in the routes).
+   * @param lc Controller list to make the Routes archive
+   */
   @Override
   public void preprocess(final List<Controller> lc) {
     for (final Controller ctrl : lc) {
@@ -70,6 +76,11 @@ public class RoutesTemplate extends SimpleTemplate<List<Controller>> {
     }
   }
   
+  /**
+   * This method makes the PHP Routes archive for a given list of ISML controllers.
+   * @param e the controller list
+   * @return the PHP Routes archive
+   */
   @Override
   protected CharSequence template(final List<Controller> e) {
     StringConcatenation _builder = new StringConcatenation();
@@ -120,6 +131,11 @@ public class RoutesTemplate extends SimpleTemplate<List<Controller>> {
     return _builder;
   }
   
+  /**
+   * This method formats a parameter list from an Action for put them in the action's relative URL.
+   * @param action a Controller Action
+   * @return formatted string for the parameters
+   */
   public CharSequence generateParameters(final Action action) {
     CharSequence _xblockexpression = null;
     {

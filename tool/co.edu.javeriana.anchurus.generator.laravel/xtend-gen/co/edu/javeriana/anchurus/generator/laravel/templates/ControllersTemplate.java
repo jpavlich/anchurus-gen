@@ -97,6 +97,11 @@ public class ControllersTemplate extends SimpleTemplate<Controller> {
     }
   }
   
+  /**
+   * This method generates the whole PHP Controller archive from a given ISML controller.
+   * @param c the Controller
+   * @return the Controller archive
+   */
   @Override
   public CharSequence template(final Controller c) {
     StringConcatenation _builder = new StringConcatenation();
@@ -215,6 +220,11 @@ public class ControllersTemplate extends SimpleTemplate<Controller> {
     return _builder;
   }
   
+  /**
+   * This method generates an Attribute declaration in PHP.
+   * @param attribute attribute in ISML
+   * @return attribute in PHP format
+   */
   public CharSequence generateAttributes(final Attribute attribute) {
     StringConcatenation _builder = new StringConcatenation();
     _builder.append("private $");
@@ -225,6 +235,11 @@ public class ControllersTemplate extends SimpleTemplate<Controller> {
     return _builder;
   }
   
+  /**
+   * This method generates the PHP code for a function, from the given ISML action.
+   * @param action the ISML action
+   * @return the PHP function
+   */
   public CharSequence generateFunction(final Action action) {
     StringConcatenation _builder = new StringConcatenation();
     _builder.append("public function ");
@@ -307,6 +322,11 @@ public class ControllersTemplate extends SimpleTemplate<Controller> {
     return _builder;
   }
   
+  /**
+   * This method generates the body of a PHP function, given a ISML MethodStatement list.
+   * @param lms the ISML action list
+   * @return PHP function body
+   */
   public CharSequence generateBody(final List<MethodStatement> lms) {
     StringConcatenation _builder = new StringConcatenation();
     {
@@ -333,6 +353,11 @@ public class ControllersTemplate extends SimpleTemplate<Controller> {
     return _builder;
   }
   
+  /**
+   * This method generates the PHP "if" statement, given a ISML If statement.
+   * @param ifst the ISML If statement
+   * @return PHP if statement
+   */
   protected CharSequence _generateMethodStatement(final If ifst) {
     StringConcatenation _builder = new StringConcatenation();
     _builder.append("if(");
@@ -370,16 +395,31 @@ public class ControllersTemplate extends SimpleTemplate<Controller> {
     return _builder;
   }
   
+  /**
+   * This method must generate the PHP Assignment statement, given the ISML assignment statement.
+   * @param assign the ISML assignment
+   * @return the PHP Assignment statement
+   */
   protected CharSequence _generateMethodStatement(final Assignment assign) {
     StringConcatenation _builder = new StringConcatenation();
     return _builder;
   }
   
+  /**
+   * This method must generate the PHP Return statement, given the ISML return statement.
+   * @param returnst the ISML return
+   * @return the PHP Return statement
+   */
   protected CharSequence _generateMethodStatement(final Return returnst) {
     StringConcatenation _builder = new StringConcatenation();
     return _builder;
   }
   
+  /**
+   * This method generates the PHP "for" statement, given a ISML For statement.
+   * @param forst the ISML For statement
+   * @return PHP for statement
+   */
   protected CharSequence _generateMethodStatement(final For forst) {
     StringConcatenation _builder = new StringConcatenation();
     _builder.append("foreach(");
@@ -402,11 +442,21 @@ public class ControllersTemplate extends SimpleTemplate<Controller> {
     return _builder;
   }
   
+  /**
+   * This method must generate the PHP "while" statement, given a ISML While statement.
+   * @param whilest the ISML While statement
+   * @return PHP while statement
+   */
   protected CharSequence _generateMethodStatement(final While whilest) {
     StringConcatenation _builder = new StringConcatenation();
     return _builder;
   }
   
+  /**
+   * This method generates the PHP action calling, given a ISML ActionCall statement.
+   * @param acst the ISML ActionCall statement
+   * @return PHP action calling
+   */
   protected CharSequence _generateMethodStatement(final ActionCall acst) {
     StringConcatenation _builder = new StringConcatenation();
     _builder.append("$this->");
@@ -430,21 +480,43 @@ public class ControllersTemplate extends SimpleTemplate<Controller> {
     return _builder;
   }
   
+  /**
+   * This method must generate the PHP method calling, given a ISML MethodCall statement.
+   * @param mcst the ISML MethodCall statement
+   * @return PHP for statement
+   */
   protected CharSequence _generateMethodStatement(final MethodCall mcst) {
     StringConcatenation _builder = new StringConcatenation();
     return _builder;
   }
   
+  /**
+   * This method must generate the PHP resource referencing, given a ISML<br>
+   * ResourceReference statement.
+   * @param resref the ISML ResourceReference statement
+   * @return PHP resource referencing
+   */
   protected CharSequence _generateMethodStatement(final ResourceReference resref) {
     StringConcatenation _builder = new StringConcatenation();
     return _builder;
   }
   
+  /**
+   * This method must generate the PHP type, given a ISML Type statement.
+   * @param type the ISML Type statement
+   * @return PHP type statement
+   */
   protected CharSequence _generateMethodStatement(final Type type) {
     StringConcatenation _builder = new StringConcatenation();
     return _builder;
   }
   
+  /**
+   * This method generates the PHP variable reference, given a ISML VariableReference<br>
+   * statement.
+   * @param vr the ISML VariableReference statement
+   * @return PHP variable reference
+   */
   protected CharSequence _generateMethodStatement(final VariableReference vr) {
     StringConcatenation _builder = new StringConcatenation();
     CharSequence _valueTemplate = this._utilsAnchurus.valueTemplate(vr);
@@ -452,6 +524,12 @@ public class ControllersTemplate extends SimpleTemplate<Controller> {
     return _builder;
   }
   
+  /**
+   * This method generates the PHP variable declaration, given a ISML Variable<br>
+   * statement.
+   * @param variable the ISML Variable statement
+   * @return PHP variable
+   */
   protected CharSequence _generateMethodStatement(final Variable variable) {
     StringConcatenation _builder = new StringConcatenation();
     _builder.append("$");
@@ -461,6 +539,12 @@ public class ControllersTemplate extends SimpleTemplate<Controller> {
     return _builder;
   }
   
+  /**
+   * This method generates a return method for show views in PHP, given a ISML Show<br>
+   * statement.
+   * @param show the ISML Show statement
+   * @return PHP return method for show
+   */
   protected CharSequence _generateMethodStatement(final Show show) {
     CharSequence _xblockexpression = null;
     {
@@ -493,6 +577,12 @@ public class ControllersTemplate extends SimpleTemplate<Controller> {
     return _xblockexpression;
   }
   
+  /**
+   * This method generates formatted parameters for an action, given a ISML Action<br>
+   * statement.
+   * @param action the ISML Action statement
+   * @return formatted parameters, separated by commas
+   */
   public CharSequence getParameters(final Action action) {
     StringConcatenation _builder = new StringConcatenation();
     {
@@ -519,6 +609,13 @@ public class ControllersTemplate extends SimpleTemplate<Controller> {
     return _builder;
   }
   
+  /**
+   * This method generates format for the parameter given, distinguishing between Entity parameters <br>
+   * and other parameter types.
+   * 
+   * @param action the ISML Action statement
+   * @return formatted parameters, separated by commas
+   */
   public CharSequence generateParams(final Parameter p) {
     Type _type = p.getType();
     TypeSpecification _typeSpecification = this._ismlModelNavigation.getTypeSpecification(_type);

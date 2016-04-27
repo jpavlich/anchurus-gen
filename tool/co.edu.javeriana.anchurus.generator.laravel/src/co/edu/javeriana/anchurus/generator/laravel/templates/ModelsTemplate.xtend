@@ -9,10 +9,8 @@ import com.google.inject.Inject
 class ModelsTemplate extends SimpleTemplate<Entity> {
 	@Inject extension TypeChecker
 	@Inject extension IsmlModelNavigation	
-	int i
 
 	override preprocess(Entity e) {
-		i= 1;	
 	}
 	
 	

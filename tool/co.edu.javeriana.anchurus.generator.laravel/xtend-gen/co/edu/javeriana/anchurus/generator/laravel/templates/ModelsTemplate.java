@@ -18,13 +18,15 @@ public class ModelsTemplate extends SimpleTemplate<Entity> {
   @Extension
   private IsmlModelNavigation _ismlModelNavigation;
   
-  private int i;
-  
   @Override
   public void preprocess(final Entity e) {
-    this.i = 1;
   }
   
+  /**
+   * This method makes the PHP Model archive for a given ISML entity.
+   * @param e the Entity
+   * @return the PHP Model archive
+   */
   @Override
   public CharSequence template(final Entity e) {
     StringConcatenation _builder = new StringConcatenation();

@@ -41,18 +41,42 @@ public class UtilsAnchurus {
   @Extension
   private IsmlModelNavigation _ismlModelNavigation;
   
+  /**
+   * This method takes a CamelCased string and converts it to its<br>
+   * SnakeCased form.
+   * 
+   * @param string the CamelCased string
+   * @return a SnakeCased string
+   */
   public String toSnakeCase(final String string) {
     return CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, string);
   }
   
+  /**
+   * This method takes a CamelCased string and converts it to its<br>
+   * KebabCased form.
+   * 
+   * @param string the CamelCased string
+   * @return a KebabCased string
+   */
   public String toKebabCase(final String string) {
     return CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_HYPHEN, string);
   }
   
+  /**
+   * This method returns the current date.
+   * @return the current date
+   */
   public Calendar fecha() {
     return Calendar.getInstance();
   }
   
+  /**
+   * This method takes an ISML expression and, according with the <br>
+   * Expression type, converts it to a different formatted string.
+   * @param e expression to convert
+   * @return formatted string
+   */
   public CharSequence valueTemplate(final Expression e) {
     CharSequence _switchResult = null;
     boolean _matched = false;
@@ -160,6 +184,12 @@ public class UtilsAnchurus {
     return _switchResult;
   }
   
+  /**
+   * This method takes a VariableReference which is tailed and generates all the element, tail included.
+   * 
+   * @param vr VariableReference with tail
+   * @return formatted string
+   */
   public CharSequence generateTailedElement(final VariableReference vr) {
     StringConcatenation _builder = new StringConcatenation();
     String accumulate = _builder.toString();
@@ -201,8 +231,9 @@ public class UtilsAnchurus {
   }
   
   /**
-   * brief explanation about what does this method
-   * @param reference the reference...
+   * This method receives a reference and transforms it to a formatted String.
+   * 
+   * @param reference Referenced element to convert
    * @return referenced element converted to a formatted string
    */
   public CharSequence generateReferencedElement(final Reference reference) {
@@ -259,6 +290,13 @@ public class UtilsAnchurus {
     return _switchResult;
   }
   
+  /**
+   * This method receives a ParameterizedReference and gets the parameters <br>
+   * of that, separated by comma.
+   * 
+   * @param reference ParameterizedReference from the parameters will be obtained
+   * @return parameters separated by comma
+   */
   public CharSequence getParameters(final ParameterizedReference<?> reference) {
     StringConcatenation _builder = new StringConcatenation();
     {
@@ -284,6 +322,11 @@ public class UtilsAnchurus {
     return _builder;
   }
   
+  /**
+   * This method asks if the given Reference has or no a tail.
+   * @param r Reference to confirm
+   * @return confirmation if the Reference has or no a tail
+   */
   public boolean hasTail(final Reference r) {
     Reference _tail = r.getTail();
     boolean _notEquals = (!Objects.equal(_tail, null));
@@ -294,6 +337,12 @@ public class UtilsAnchurus {
     }
   }
   
+  /**
+   * This method generates a PHP-formatted array to pass to an auto-generated method <br>
+   * in the page template.
+   * @param instance the ViewInstance which has the auto-generated method
+   * @return the PHP-formatted array
+   */
   public CharSequence generateArray(final ViewInstance instance) {
     String accumulate = "";
     String string = "";
@@ -325,6 +374,11 @@ public class UtilsAnchurus {
     return string;
   }
   
+  /**
+   * This method returns an URL-suitable string for the controller given.
+   * @param c a controller
+   * @return controller string
+   */
   public String namedUrlForController(final Controller c) {
     String guia = "-controller";
     String nombreCompl = c.getName();
@@ -334,6 +388,11 @@ public class UtilsAnchurus {
     return cadena;
   }
   
+  /**
+   * This method makes a relative URL for a given ActionCall.
+   * @param ac an action call
+   * @return relative URL
+   */
   public String namedUrlForActionCall(final ActionCall ac) {
     Action _action = this._ismlModelNavigation.getAction(ac);
     EObject _eContainer = _action.eContainer();
@@ -350,6 +409,11 @@ public class UtilsAnchurus {
     return (_plus_3 + _generateParametersActionCall);
   }
   
+  /**
+   * This method generates the parameters for a given ActionCall, using the Blade format.
+   * @param call an action call
+   * @return formatted parameters
+   */
   public CharSequence generateParametersActionCall(final ActionCall call) {
     StringConcatenation _builder = new StringConcatenation();
     String generatedParameters = _builder.toString();
@@ -372,6 +436,11 @@ public class UtilsAnchurus {
     return generatedParameters;
   }
   
+  /**
+   * Enhanced version of the valueTemplate method with a somewhat<br>
+   * different format if the Expression is an ReferencedElement Entity.
+   * @return the current date
+   */
   public CharSequence valueTemplateForEntities(final Expression e) {
     if ((e instanceof VariableReference)) {
       VariableTypeElement _referencedElement = ((VariableReference)e).getReferencedElement();
