@@ -30,10 +30,6 @@ page DietaList(Collection<Dieta> dietas) controlledBy DietaManager  {
 
 	           }
 	        	
-	        	GMap("4.627447, -74.063842","15","HYBRID");
-	        
-	        	
-	        	
 		}
 	} 
 	

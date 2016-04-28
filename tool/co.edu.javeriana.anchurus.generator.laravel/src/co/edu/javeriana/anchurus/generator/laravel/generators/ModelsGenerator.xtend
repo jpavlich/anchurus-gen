@@ -7,6 +7,7 @@ import co.edu.javeriana.isml.isml.Entity
 import com.google.inject.Inject
 import org.eclipse.xtext.naming.IQualifiedNameProvider
 
+//For further information, see the class SimpleGenerator<T>
 class ModelsGenerator extends SimpleGenerator<Entity> {
 
 	@Inject extension IQualifiedNameProvider

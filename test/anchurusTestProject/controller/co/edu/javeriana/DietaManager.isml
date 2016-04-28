@@ -3,10 +3,6 @@ package co.edu.javeriana;
 controller DietaManager {
 	has Persistence<Dieta> persistence;
 	
-	default initTest(){
-		-> listAll();
-		
-	}
 	/**
 	* Lists all instances of Dieta.
 	*/
@@ -21,16 +17,6 @@ controller DietaManager {
 	listDieta(Collection<Dieta> dietaList) {
 		show DietaList(dietaList);
 	}
-	
-
-
-	
-	createDietaToAdd(Any container, Collection<Dieta> collection) {
-		show CreateDietaToAdd(container, collection, new Dieta);
-			
-	}
-
-	
 	
 
 	/**

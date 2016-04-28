@@ -8,6 +8,7 @@ import com.google.inject.Inject
 import org.eclipse.xtext.naming.IQualifiedNameProvider
 import co.edu.javeriana.anchurus.generator.laravel.utils.UtilsAnchurus
 
+//For further information, see the class SimpleGenerator<T>
 class PagesGenerator extends SimpleGenerator<Page> {
 
 	@Inject extension IQualifiedNameProvider

@@ -344,12 +344,13 @@ public class ControllersTemplate extends SimpleTemplate<Controller> {
           } else {
             CharSequence _generateMethodStatement_1 = this.generateMethodStatement(sentence);
             _builder.append(_generateMethodStatement_1, "");
-            _builder.append(";");
+            _builder.append("; ");
+            _builder.newLineIfNotEmpty();
+            _builder.newLine();
           }
         }
       }
     }
-    _builder.newLineIfNotEmpty();
     return _builder;
   }
   
@@ -459,7 +460,7 @@ public class ControllersTemplate extends SimpleTemplate<Controller> {
    */
   protected CharSequence _generateMethodStatement(final ActionCall acst) {
     StringConcatenation _builder = new StringConcatenation();
-    _builder.append("$this->");
+    _builder.append("return $this->");
     Action _action = this._ismlModelNavigation.getAction(acst);
     String _name = _action.getName();
     _builder.append(_name, "");

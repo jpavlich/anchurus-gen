@@ -9,6 +9,7 @@ import org.eclipse.xtext.naming.IQualifiedNameProvider
 import java.util.Calendar
 import co.edu.javeriana.anchurus.generator.laravel.utils.UtilsAnchurus
 
+//For further information, see the class SimpleGenerator<T>
 class MigrationsGenerator extends SimpleGenerator<Entity> {
 
 	@Inject extension IQualifiedNameProvider

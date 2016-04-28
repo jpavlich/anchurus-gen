@@ -6,6 +6,7 @@ import co.edu.javeriana.isml.generator.common.SimpleGenerator
 import co.edu.javeriana.anchurus.generator.laravel.AnchurusLaravelGenerator
 import co.edu.javeriana.anchurus.generator.laravel.templates.RoutesTemplate
 
+//For further information, see the class SimpleGenerator<T>
 class RoutesGenerator extends SimpleGenerator<List<Controller>> {
 	
 	override protected getFileName(List<Controller> e) {

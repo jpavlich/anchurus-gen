@@ -135,7 +135,9 @@ class ControllersTemplate extends SimpleTemplate<Controller> {
 	 * @return PHP function body
 	 * */
 	def CharSequence generateBody(List<MethodStatement> lms)'''
-		«FOR sentence: lms»«IF sentence instanceof If || sentence instanceof For»«generateMethodStatement(sentence)»«ELSE»«generateMethodStatement(sentence)»;«ENDIF»«ENDFOR»
+		«FOR sentence: lms»«IF sentence instanceof If || sentence instanceof For»«generateMethodStatement(sentence)»«ELSE»«generateMethodStatement(sentence)»; 
+		
+		«ENDIF»«ENDFOR»
 	'''
 	
 	/**
@@ -197,7 +199,8 @@ class ControllersTemplate extends SimpleTemplate<Controller> {
 	 * @param acst the ISML ActionCall statement
 	 * @return PHP action calling
 	 * */
-	def dispatch CharSequence generateMethodStatement(ActionCall acst)'''$this->«acst.action.name»($req«IF acst.action.parameters.size !=0», «getParameters(acst.action)»«ENDIF»)'''
+	def dispatch CharSequence generateMethodStatement(ActionCall acst)'''
+	return $this->«acst.action.name»($req«IF acst.action.parameters.size !=0», «getParameters(acst.action)»«ENDIF»)'''
 	
 	/**
 	 * This method must generate the PHP method calling, given a ISML MethodCall statement.

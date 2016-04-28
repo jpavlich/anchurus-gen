@@ -9,6 +9,8 @@ import org.eclipse.xtext.naming.IQualifiedNameProvider
 import co.edu.javeriana.isml.isml.Controller
 import co.edu.javeriana.anchurus.generator.laravel.templates.ControllersTemplate
 
+
+//For further information, see the class SimpleGenerator<T>
 class ControllersGenerator extends SimpleGenerator<Controller> {
 
 	@Inject extension IQualifiedNameProvider

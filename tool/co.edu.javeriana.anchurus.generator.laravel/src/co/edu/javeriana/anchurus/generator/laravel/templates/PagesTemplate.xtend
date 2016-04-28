@@ -1,4 +1,4 @@
- package co.edu.javeriana.anchurus.generator.laravel.templates
+package co.edu.javeriana.anchurus.generator.laravel.templates
 
 import co.edu.javeriana.anchurus.generator.laravel.utils.UtilsAnchurus
 import co.edu.javeriana.isml.generator.common.SimpleTemplate
