@@ -137,7 +137,7 @@ class PagesTemplate extends SimpleTemplate<Page> {
 		{!! Form::close() !!}
 	'''
 	/**
-	 * This method takes an ISML ViewInstance Label and returns a HTML-formatted label element, with its elements inside 
+	 * This method takes an ISML ViewInstance Panel and returns a HTML-formatted div element, with its elements inside 
 	 * @param part the ISML ViewInstance element
 	 * @return Panel element with HTML format
 	 * */
