@@ -1,0 +1,7 @@
+Anchurus-GEN
+Copyright 2016 Frank Sebastián Franco Hernández (ZARDEV)
+
+This product includes software developed at
+Pontificia Universidad Javeriana, who developed the ISML API.
+The Eclipse Foundation, who developed all the Xtext and Xtend infrastructure, and Eclipse itself.
+Google Inc., who developed the Guava framework.
